@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>婚貴悠閒農場 - Baby Food Planet</title>
+    <!-- 引入 Google Fonts 溫馨圓體字型 (Quicksand / Nunito) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS 樣式框架 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            bg: '#FAF8F5',          /* 象牙白法式背景 */
+                            card: '#FFFFFF',        /* 純白卡片 */
+                            primary: '#A3704C',     /* 焦糖奶茶主色 */
+                            secondary: '#E6CCB2',   /* 暖米色 */
+                            accent: '#D4A373',      /* 溫潤琥珀色 */
+                            yellow: '#FAEDCD',      /* 柔和黃 */
+                            red: '#CCD5AE',         /* 柔和綠/紅警示 */
+                            text: '#423830',        /* 可可深棕字體 */
+                            muted: '#8C7A6B',       /* 灰棕副標題 */
+                            border: '#D8C5B2'       /* 柔和邊框 */
+                        }
+                    },
+                    fontFamily: {
+                        rounded: ['"Quicksand"', '"Nunito"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', 'Nunito', sans-serif;
+            background-color: #FAF8F5;
+            color: #423830;
+        }
+        /* 法式奶油風手繪粗框與陰影 */
+        .cream-box {
+            border: 2.5px solid #423830;
+            border-radius: 20px;
+            box-shadow: 4px 4px 0px #423830;
+            transition: all 0.2s ease;
+        }
+        .cream-box:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #423830;
+        }
+        .cream-btn {
+            border: 2px solid #423830;
+            border-radius: 14px;
+            box-shadow: 3px 3px 0px #423830;
+            transition: all 0.1s ease;
+        }
+        .cream-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #423830;
+        }
+        /* 地圖輕量化半透明膠囊按鈕 */
+        .map-zone-pill {
+            background: rgba(255, 253, 249, 0.62);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1.5px solid rgba(66, 56, 48, 0.32);
+            border-radius: 9999px;
+            box-shadow: 0 3px 10px rgba(66, 56, 48, 0.12);
+            transition: all 0.18s ease;
+        }
+        .map-zone-pill:hover {
+            background: rgba(255, 253, 249, 0.88);
+            border-color: #423830;
+            transform: translate(-50%, -52%) scale(1.04);
+        }
+        .map-zone-pill:active {
+            transform: translate(-50%, -48%) scale(0.98);
+        }
+        /* 虛線導圓角方框 */
+        .cream-dashed-box {
+            border: 2.5px dashed #A3704C;
+            border-radius: 18px;
+            background-color: #FFFDF9;
+            transition: all 0.2s ease;
+        }
+        .cream-dashed-box:hover {
+            border-color: #423830;
+            transform: translateY(-2px);
+        }
+        /* 一般方框 */
+        .normal-box {
+            border: 2.5px solid #423830;
+            border-radius: 18px;
+            background-color: #FFFDF9;
+            transition: all 0.2s ease;
+        }
+        /* 立可拍相片框樣式 */
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 26px 10px;
+            border: 2px solid #423830;
+            box-shadow: 3px 3px 0px rgba(66,56,48,0.25);
+            transform: rotate(-1deg);
+            transition: transform 0.3s;
+        }
+        .polaroid:nth-child(even) {
+            transform: rotate(1.5deg);
+        }
+        .polaroid:hover {
+            transform: scale(1.03) rotate(0deg);
+            z-index: 10;
+        }
+        /* 浮動動畫效果 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        /* 隱藏滾動條但保持滾動 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-24 select-none">
+
+    <!-- 頂端資訊列 -->
+    <header class="bg-white/90 backdrop-blur-md border-b-2 border-cream-text sticky top-0 z-40 px-4 py-3 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-2 bg-cream-secondary/40 px-3.5 py-1.5 rounded-full border-2 border-cream-text/40">
+            <span class="text-lg">🌱</span>
+            <div>
+                <p id="header-baby-age" class="text-xs font-extrabold text-cream-text">計算中...</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-1.5 bg-cream-primary/15 px-3.5 py-1.5 rounded-full border-2 border-cream-text/40">
+            <span class="text-xs font-bold text-cream-text">食材解鎖:</span>
+            <span id="header-unlock-count" class="text-xs font-extrabold text-cream-primary">0/36</span>
+        </div>
+    </header>
+
+    <!-- 主要內容動態容器 -->
+    <main id="app-container" class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6">
+        <!-- 內容將由 JavaScript 動態渲染 -->
+    </main>
+
+    <!-- 底部固定導覽列 -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t-2 border-cream-text py-2 px-4 z-40 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-around items-center">
+            <button onclick="router.navigate('home')" class="nav-btn flex flex-col items-center p-2 text-cream-text hover:text-cream-primary transition" data-target="home">
+                <span class="text-xl">🏡</span>
+                <span class="text-xs font-bold mt-0.5">首頁</span>
+            </button>
+            <button onclick="router.navigate('encyclopedia')" class="nav-btn flex flex-col items-center p-2 text-cream-text hover:text-cream-primary transition" data-target="encyclopedia">
+                <span class="text-xl">📖</span>
+                <span class="text-xs font-bold mt-0.5">圖鑑</span>
+            </button>
+            <button onclick="router.navigate('calendar')" class="nav-btn flex flex-col items-center p-2 text-cream-text hover:text-cream-primary transition" data-target="calendar">
+                <span class="text-xl">📅</span>
+                <span class="text-xs font-bold mt-0.5">週曆</span>
+            </button>
+            <button onclick="router.navigate('guidelines')" class="nav-btn flex flex-col items-center p-2 text-cream-text hover:text-cream-primary transition" data-target="guidelines">
+                <span class="text-xl">💡</span>
+                <span class="text-xs font-bold mt-0.5">食用須知</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 通用互動彈窗 Modal -->
+    <div id="modal-container" class="fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target === this) closeModal()">
+        <div id="modal-content" class="bg-cream-bg normal-box w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative">
+            <!-- 彈窗內容 -->
+        </div>
+    </div>
+
+    <!-- 螢幕中央圖鑑解鎖卡片通知 Modal -->
+    <div id="unlock-card-modal" class="fixed inset-0 bg-black/55 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" onclick="if(event.target === this) closeUnlockCardModal()">
+        <div id="unlock-card-content" class="bg-cream-bg normal-box w-full max-w-xs sm:max-w-sm p-6 relative text-center">
+            <!-- 圖鑑卡內容由 JS 動態生成 -->
+        </div>
+    </div>
+
+    <!-- JavaScript 應用程式核心邏輯 -->
+    <script>
+        // ==================== 1. 資料結構與預設資料 (支援 Google Sheet 雲端圖鑑自動同步) ====================
+        const DEFAULT_INGREDIENTS_GAS_URL = "https://script.google.com/macros/s/AKfycbwXXkMDvg_MqXXVNzUzPoBM-0eNbBCPutKrGIz0h2Q81XzkyAR8KdAVWbHm0olU8lOh/exec";
+
+        const DEFAULT_STATE = {
+            owner: {
+                nameZh: "婚貴",
+                nameEn: "fen-guo",
+                birthDate: "2026-06-07",
+                avatarUrl: ""
+            },
+            // 本地備援 36 個預設食材資料庫 (連線雲端試算表後將自動同步擴充，圖片統一由 imageUrl 呈現)
+            ingredients: {
+                // 農田區（五穀/蔬菜 - 12個）
+                'rice_porridge': { id: 'rice_porridge', name: '十倍粥', nameEn: 'Rice Porridge', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '米與水 1:10 比例熬煮 45 分鐘並過篩成糊狀。', history: [] },
+                'brown_rice': { id: 'brown_rice', name: '糙米粥', nameEn: 'Brown Rice', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '糙米浸泡 4 小時後加水 1:8 熬煮糊化。', history: [] },
+                'oatmeal': { id: 'oatmeal', name: '燕麥粥', nameEn: 'Oatmeal', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '即食燕麥加開水或奶水煮滾軟化。', history: [] },
+                'cabbage': { id: 'cabbage', name: '高麗菜', nameEn: 'Cabbage', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '取嫩葉蒸熟或燙熟，調理機打成細泥。', history: [] },
+                'carrot': { id: 'carrot', name: '紅蘿蔔', nameEn: 'Carrot', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '去皮切塊蒸軟，加少許溫水打泥。', history: [] },
+                'broccoli': { id: 'broccoli', name: '花椰菜', nameEn: 'Broccoli', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '取花蕾部分川燙熟透，去除粗纖維打泥。', history: [] },
+                'pumpkin': { id: 'pumpkin', name: '南瓜', nameEn: 'Pumpkin', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '去皮去籽蒸熟壓泥，口感香甜。', history: [] },
+                'sweet_potato': { id: 'sweet_potato', name: '地瓜', nameEn: 'Sweet Potato', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '蒸熟壓泥，亦可做為 BLW 條狀手指食物。', history: [] },
+                'spinach': { id: 'spinach', name: '菠菜', nameEn: 'Spinach', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '取嫩葉川燙去草酸後打泥。', history: [] },
+                'zucchini': { id: 'zucchini', name: '櫛瓜', nameEn: 'Zucchini', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '切片蒸軟或磨泥，溫和好消化。', history: [] },
+                'potato': { id: 'potato', name: '馬鈴薯', nameEn: 'Potato', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '去皮蒸熟壓成綿密泥狀。', history: [] },
+                'tomato': { id: 'tomato', name: '番茄', nameEn: 'Tomato', category: 'farm', seedEmoji: '❓', imageUrl: '', prep: '去皮去籽燙熟打泥，酸甜開胃。', history: [] },
+
+                // 果樹區（水果 - 8個）
+                'apple': { id: 'apple', name: '蘋果泥', nameEn: 'Apple', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '蘋果洗淨去皮磨成泥，或蒸熟軟化餵食。', history: [] },
+                'banana': { id: 'banana', name: '香蕉泥', nameEn: 'Banana', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '選熟透帶斑點香蕉，湯匙直接壓泥。', history: [] },
+                'avocado': { id: 'avocado', name: '酪梨', nameEn: 'Avocado', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '熟透酪梨質地綿密，直接壓泥或切長條。', history: [] },
+                'papaya': { id: 'papaya', name: '木瓜', nameEn: 'Papaya', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '去皮去籽後用湯匙刮泥。', history: [] },
+                'kiwi': { id: 'kiwi', name: '奇異果', nameEn: 'Kiwi', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '選擇軟熟奇異果壓泥，注意酸度。', history: [] },
+                'pear': { id: 'pear', name: '水梨', nameEn: 'Pear', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '去皮去核蒸軟或磨泥，潤肺止咳。', history: [] },
+                'peach': { id: 'peach', name: '水蜜桃', nameEn: 'Peach', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '去皮去核壓成香甜果泥。', history: [] },
+                'mango': { id: 'mango', name: '芒果', nameEn: 'Mango', category: 'orchard', seedEmoji: '❓', imageUrl: '', prep: '取熟透果肉切碎或打泥，注意過敏原。', history: [] },
+
+                // 魚池（魚類/海鮮 - 6個）
+                'salmon': { id: 'salmon', name: '鮭魚泥', nameEn: 'Salmon', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '蒸熟去刺去皮，壓碎融入粥品中。', history: [] },
+                'cod': { id: 'cod', name: '鱈魚泥', nameEn: 'Cod', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '鱈魚洗淨蒸熟，小心挑除細刺後壓泥。', history: [] },
+                'whitebait': { id: 'whitebait', name: '吻仔魚', nameEn: 'Whitebait', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '清洗乾淨川燙去鹹味，加入粥裡熬煮。', history: [] },
+                'tuna': { id: 'tuna', name: '鮪魚', nameEn: 'Tuna', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '水煮去鹽分後捏碎入粥。', history: [] },
+                'shrimp': { id: 'shrimp', name: '蝦仁', nameEn: 'Shrimp', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '去殼去腸泥蒸熟打細。', history: [] },
+                'clam': { id: 'clam', name: '蛤蜊湯汁', nameEn: 'Clam', category: 'fish', seedEmoji: '❓', imageUrl: '', prep: '吐沙後煮湯取清湯烹煮粥品。', history: [] },
+
+                // 牧場區（蛋白質/肉類 - 6個）
+                'chicken': { id: 'chicken', name: '雞肉泥', nameEn: 'Chicken', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '雞胸肉切小塊水煮熟透，加高湯打成細肉泥。', history: [] },
+                'pork': { id: 'pork', name: '豬肉泥', nameEn: 'Pork', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '里肌肉去除筋膜蒸熟，調理機打泥。', history: [] },
+                'beef': { id: 'beef', name: '牛肉泥', nameEn: 'Beef', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '選牛裡肌富含鐵質，煮熟打泥。', history: [] },
+                'egg_yolk': { id: 'egg_yolk', name: '蛋黃', nameEn: 'Egg Yolk', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '水煮蛋取全熟蛋黃少量嘗試。', history: [] },
+                'tofu': { id: 'tofu', name: '嫩豆腐', nameEn: 'Tofu', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '滾水燙過後壓碎，植物性蛋白質。', history: [] },
+                'cheese': { id: 'cheese', name: '起司', nameEn: 'Cheese', category: 'pasture', seedEmoji: '❓', imageUrl: '', prep: '選擇低鈉嬰幼兒起司加入熱粥融化。', history: [] },
+
+                // 溫室（菇類 - 4個）
+                'shiitake': { id: 'shiitake', name: '香菇', nameEn: 'Shiitake Mushroom', category: 'greenhouse', seedEmoji: '❓', imageUrl: '', prep: '取傘面嫩褶部分煮熟剁細或打泥。', history: [] },
+                'king_oyster': { id: 'king_oyster', name: '杏鮑菇', nameEn: 'King Oyster Mushroom', category: 'greenhouse', seedEmoji: '❓', imageUrl: '', prep: '切小塊蒸軟後打成細末。', history: [] },
+                'shimeji': { id: 'shimeji', name: '鴻喜菇', nameEn: 'Brown Beech Mushroom', category: 'greenhouse', seedEmoji: '❓', imageUrl: '', prep: '去基部煮熟切細好咀嚼。', history: [] },
+                'enoki': { id: 'enoki', name: '金針菇', nameEn: 'Enoki Mushroom', category: 'greenhouse', seedEmoji: '❓', imageUrl: '', prep: '切超短碎段煮軟。', history: [] }
+            },
+            customIngredients: [],
+            achievements: [],
+            polaroids: {},
+            ingredientsGasUrl: DEFAULT_INGREDIENTS_GAS_URL,
+            gasUrl: ""
+        };
+
+        // 安全載入並合併 LocalStorage 資料
+        function loadInitialState() {
+            try {
+                const raw = localStorage.getItem('hngui_farm_state_v2');
+                if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                const parsed = JSON.parse(raw);
+                const mergedIngredients = JSON.parse(JSON.stringify(DEFAULT_STATE.ingredients));
+                if (parsed.ingredients && typeof parsed.ingredients === 'object') {
+                    Object.keys(parsed.ingredients).forEach(key => {
+                        if (mergedIngredients[key]) {
+                            mergedIngredients[key] = { ...mergedIngredients[key], ...parsed.ingredients[key] };
+                        } else {
+                            mergedIngredients[key] = parsed.ingredients[key];
+                        }
+                    });
+                }
+                return {
+                    ...JSON.parse(JSON.stringify(DEFAULT_STATE)),
+                    ...parsed,
+                    owner: { ...DEFAULT_STATE.owner, ...(parsed.owner || {}) },
+                    ingredients: mergedIngredients,
+                    customIngredients: Array.isArray(parsed.customIngredients) ? parsed.customIngredients : [],
+                    achievements: Array.isArray(parsed.achievements) ? parsed.achievements : [],
+                    polaroids: parsed.polaroids && typeof parsed.polaroids === 'object' ? parsed.polaroids : {},
+                    ingredientsGasUrl: (parsed.ingredientsGasUrl && parsed.ingredientsGasUrl.trim()) ? parsed.ingredientsGasUrl.trim() : DEFAULT_INGREDIENTS_GAS_URL
+                };
+            } catch (e) {
+                console.error('載入本地資料發生錯誤，使用預設資料：', e);
+                return JSON.parse(JSON.stringify(DEFAULT_STATE));
+            }
+        }
+
+        let state = loadInitialState();
+        let isCloudSyncing = false;
+
+        // 正規化試算表中的分類欄位（支援英文代碼或中文分區名稱）
+        function normalizeSheetCategory(rawCat) {
+            const val = String(rawCat || '').trim().toLowerCase();
+            if (['farm', 'orchard', 'fish', 'pasture', 'greenhouse'].includes(val)) return val;
+            if (val.includes('果') || val.includes('水果')) return 'orchard';
+            if (val.includes('魚') || val.includes('海鮮')) return 'fish';
+            if (val.includes('牧') || val.includes('肉') || val.includes('蛋') || val.includes('奶') || val.includes('豆') || val.includes('堅果')) return 'pasture';
+            if (val.includes('溫室') || val.includes('菇')) return 'greenhouse';
+            return 'farm';
+        }
+
+        // 從 Google 試算表 (GAS Web App) 自動同步官方食材圖鑑
+        async function loadIngredientsFromCloud(showFeedback = false) {
+            const targetUrl = (state.ingredientsGasUrl || DEFAULT_INGREDIENTS_GAS_URL || '').trim();
+            if (!targetUrl || isCloudSyncing) return;
+
+            isCloudSyncing = true;
+            if (router.currentView === 'encyclopedia') renderView('encyclopedia');
+
+            try {
+                const response = await fetch(targetUrl, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const payload = await response.json();
+
+                // 兼容直接回傳陣列或包在 data / ingredients / items 內的 JSON 格式
+                const rows = Array.isArray(payload)
+                    ? payload
+                    : (Array.isArray(payload?.data) ? payload.data
+                        : (Array.isArray(payload?.ingredients) ? payload.ingredients
+                            : (Array.isArray(payload?.items) ? payload.items : [])));
+
+                if (rows.length === 0) {
+                    throw new Error('試算表回傳資料為空');
+                }
+
+                // 備份現有食材的歷史試吃紀錄（同時支援以 id 或中文名稱對應，避免紀錄遺失）
+                const historyById = {};
+                const historyByName = {};
+                Object.values(state.ingredients).forEach(existing => {
+                    if (Array.isArray(existing.history) && existing.history.length > 0) {
+                        historyById[existing.id] = existing.history;
+                        if (existing.name) historyByName[existing.name.trim()] = existing.history;
+                    }
+                });
+
+                const nextIngredients = {};
+                const matchedOldIds = new Set();
+
+                rows.forEach((row, idx) => {
+                    if (!row || typeof row !== 'object') return;
+                    const name = String(row.name || row.Name || row['食材名稱'] || row['名稱'] || '').trim();
+                    if (!name) return;
+
+                    const rawId = String(row.id || row.ID || row.Id || '').trim();
+                    const id = rawId || `sheet_item_${idx + 1}`;
+                    const nameEn = String(row.nameEn || row.name_en || row.english || row.English || row.en || row['英文名稱'] || row['英文'] || '').trim();
+                    const category = normalizeSheetCategory(row.category || row.Category || row['分類'] || row['分區']);
+                    const seedEmoji = String(row.seedEmoji || row.seed_emoji || '❓').trim() || '❓';
+                    const imageUrl = String(row.imageUrl || row.image_url || row.image || row.img || row.imgUrl || row['圖片網址'] || row['圖片'] || '').trim();
+                    const prep = String(row.prep || row.Prep || row['準備方式'] || row['準備方式與切法建議'] || '請依照寶寶月齡調整質地與大小。').trim();
+
+                    let preservedHistory = [];
+                    if (historyById[id]) {
+                        preservedHistory = historyById[id];
+                        matchedOldIds.add(id);
+                    } else if (historyByName[name]) {
+                        preservedHistory = historyByName[name];
+                    }
+
+                    nextIngredients[id] = {
+                        id,
+                        name,
+                        nameEn,
+                        category,
+                        seedEmoji,
+                        imageUrl,
+                        prep,
+                        history: preservedHistory
+                    };
+                });
+
+                // 若舊版預設食材已有食用紀錄但尚未列在試算表中，一併保留避免紀錄消失
+                Object.values(state.ingredients).forEach(oldItem => {
+                    if (!nextIngredients[oldItem.id] && !matchedOldIds.has(oldItem.id) && Array.isArray(oldItem.history) && oldItem.history.length > 0) {
+                        nextIngredients[oldItem.id] = oldItem;
+                    }
+                });
+
+                if (Object.keys(nextIngredients).length > 0) {
+                    state.ingredients = nextIngredients;
+                    saveStateSilently();
+                    updateHeaderInfo();
+                    checkAchievements();
+
+                    if (showFeedback) {
+                        showToast(`☁️ 已從試算表同步 ${Object.keys(nextIngredients).length} 項食材圖鑑！`);
+                    }
+                }
+            } catch (err) {
+                console.warn('雲端食材圖鑑同步失敗，維持目前圖鑑資料：', err);
+                if (showFeedback) {
+                    showToast('⚠️ 無法連線至試算表，請確認網址或網路狀態');
+                }
+            } finally {
+                isCloudSyncing = false;
+                if (['encyclopedia', 'section', 'farm_map', 'allergy', 'home'].includes(router.currentView)) {
+                    renderView(router.currentView, router.currentParams || {});
+                }
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('hngui_farm_state_v2', JSON.stringify(state));
+            } catch (e) {
+                console.error('儲存資料至 LocalStorage 失敗：', e);
+                showToast('⚠️ 儲存空間已滿，建議改用圖片網址或刪除部分舊照片！');
+            }
+            updateHeaderInfo();
+            checkAchievements();
+        }
+
+        function saveStateSilently() {
+            try {
+                localStorage.setItem('hngui_farm_state_v2', JSON.stringify(state));
+            } catch (e) {
+                console.error('靜默儲存資料失敗：', e);
+                showToast('⚠️ 儲存空間已滿，建議改用圖片網址或刪除部分舊照片！');
+            }
+        }
+
+        // 取得本地時區 YYYY-MM-DD 日期字串
+        function getLocalDateStr(dateObj = new Date()) {
+            const yyyy = dateObj.getFullYear();
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        // ==================== 2. 成就定義 (30項完整成就) ====================
+        const GRAIN_IDS = ['rice_porridge', 'brown_rice', 'oatmeal', 'Rice', 'Brown Rice', 'Oats', 'Corn'];
+
+        const ACHIEVEMENTS_LIST = [
+            // 🏅 食材數量與圖鑑里程碑 (1-6)
+            { id: 'first_food', title: '初嚐一口', desc: '記錄寶寶第一次吃的副食品', icon: '🥄', condition: s => getAllRecords().length >= 1 },
+            { id: 'five_kinds', title: '美食小探險', desc: '累積嘗試過 5 種不同的食材', icon: '⭐️', condition: s => getTriedCount() >= 5 },
+            { id: 'ten_kinds', title: '十全十美', desc: '累積嘗試過 10 種不同的食材', icon: '🌟', condition: s => getTriedCount() >= 10 },
+            { id: 'thirty_kinds', title: '味蕾小博士', desc: '累積嘗試過 30 種不同的食材', icon: '🎓', condition: s => getTriedCount() >= 30 },
+            { id: 'fifty_kinds', title: '美食大富翁', desc: '累積嘗試過 50 種（含自訂）不同的食材', icon: '👑', condition: s => getTriedCount() >= 50 },
+            { id: 'full_encyclopedia', title: '資深小農夫', desc: '解鎖圖鑑全部食材（每種皆吃滿 3 次）', icon: '👩‍🌾', condition: s => getUnlockedCount() >= Object.keys(s.ingredients).length },
+
+            // 🚜 農場六大區域探索 (7-16)
+            { id: 'farm_sprout', title: '農場萌芽', desc: '第一次在農田、果樹或溫室完成「播種」，並成功解鎖首張圖鑑卡', icon: '🌱', condition: s => countCategoriesUnlocked(s, ['farm', 'orchard', 'greenhouse']) >= 1 },
+            { id: 'veggie_popeye', title: '卜派愛吃菜', desc: '第一次食用農田區的蔬菜類食材', icon: '🍃', condition: s => hasEatenFarmVeggie(s) },
+            { id: 'grain_master', title: '五穀豐登', desc: '解鎖農田區五穀類食材（白米/十倍粥、糙米、燕麥）', icon: '🌾', condition: s => hasUnlockedGrains(s) },
+            { id: 'green_elf', title: '綠色小精靈', desc: '在農田區解鎖 5 種以上的蔬菜類食材', icon: '🥗', condition: s => countFarmVeggieUnlocked(s) >= 5 },
+            { id: 'fruit_sweet', title: '水果甜心', desc: '在果樹區解鎖 3 種以上的水果類食材', icon: '🍎', condition: s => countCategoryUnlocked(s, 'orchard') >= 3 },
+            { id: 'meat_grow', title: '吃肉肉長肉肉', desc: '第一次食用牧場區的肉類或蛋白質食材', icon: '🥩', condition: s => hasEatenCategory(s, 'pasture') },
+            { id: 'egg_happiness', title: '蛋蛋的幸福', desc: '成功解鎖牧場區的「蛋黃 / 雞蛋」圖鑑卡', icon: '🐣', condition: s => hasUnlockedEgg(s) },
+            { id: 'little_fisher', title: '小小漁夫', desc: '在魚池區完成餵食並解鎖魚類或海鮮食材', icon: '🎣', condition: s => countCategoryUnlocked(s, 'fish') >= 1 },
+            { id: 'greenhouse_gardener', title: '溫室小園丁', desc: '在溫室區解鎖菇類食材', icon: '🍄‍🟫', condition: s => countCategoryUnlocked(s, 'greenhouse') >= 1 },
+            { id: 'inventor', title: '小小發明家', desc: '使用「新增食材」功能，開發並記錄不在預設圖鑑中的新食材', icon: '🥼', condition: s => s.customIngredients.some(i => i.history.length >= 1) },
+
+            // 🛡️ 三天挑戰與抗敏成長 (17-22)
+            { id: 'challenge_first', title: '挑戰初體驗', desc: '完成單一食材的「三天挑戰」打卡', icon: '✅', condition: s => hasCompletedThreeDayChallenge(s) },
+            { id: 'allergy_brave', title: '抗敏小鬥士', desc: '第一次吃到曾引起過敏反應的食材，在之後再次嘗試時順利過關（無過敏反應）', icon: '🛡️', condition: s => hasOvercomeAllergy(s) },
+            { id: 'iron_stomach', title: '鐵胃小超人', desc: '連續 10 次副食品紀錄皆顯示為「無過敏反應（綠燈）」', icon: '💚', condition: s => getMaxConsecutiveNoAllergyStreak() >= 10 },
+            { id: 'careful_guardian', title: '細心守護者', desc: '首次記錄並標記過敏反應', icon: '🚨', condition: s => getAllRecords().some(r => ['mild', 'moderate', 'severe'].includes(r.reaction)) },
+            { id: 'harvest_farmer', title: '豐收小農夫', desc: '在植物類分區（農田、果樹、溫室）累計獲得 10 張「豐收了！」圖鑑卡', icon: '🪏', condition: s => countCategoriesUnlocked(s, ['farm', 'orchard', 'greenhouse']) >= 10 },
+            { id: 'pasture_tycoon', title: '牧場大亨', desc: '在動物性蛋白分區（魚池、牧場）累計獲得 5 張「長大了！」圖鑑卡', icon: '🍽️', condition: s => countCategoriesUnlocked(s, ['fish', 'pasture']) >= 5 },
+
+            // 📅 勤勞打卡與農舍紀念 (23-30)
+            { id: 'weekly_perfect', title: '週週全勤獎', desc: '連續 7 天紀錄副食品', icon: '7️⃣', condition: s => getMaxConsecutiveDays() >= 7 },
+            { id: 'persistent_30', title: '持之以恆', desc: '累積記錄副食品的天數達到 30 天', icon: '🗓️', condition: s => getUniqueRecordDates().size >= 30 },
+            { id: 'meal_master', title: '副食品達人', desc: '累計餵食記錄總次數達到 50 次', icon: '☘️', condition: s => getAllRecords().length >= 50 },
+            { id: 'hundred_meals', title: '百餐里程碑', desc: '累計餵食記錄總次數達到 100 次', icon: '💯', condition: s => getAllRecords().length >= 100 },
+            { id: 'note_writer', title: '美食家筆記', desc: '在紀錄表單中認真填寫 10 次以上的觀察心得', icon: '📝', condition: s => getNotesCount() >= 10 },
+            { id: 'polaroid_lover', title: '溫馨時刻', desc: '在農舍相片牆上傳至少 3 張寶寶照片', icon: '📸', condition: s => getSavedPolaroidPhotosCount(s) >= 3 },
+            { id: 'polaroid_collector', title: '寫真收藏家', desc: '在農舍相片牆上傳 10 張以上的寶寶照片', icon: '🖼️', condition: s => getSavedPolaroidPhotosCount(s) >= 10 },
+            { id: 'first_birthday_farmer', title: '週歲小農場主', desc: '寶寶月齡滿 12 個月，正式完成副食品階段的農場大冒險', icon: '🎂', condition: s => getBabyMonthsNum() >= 12 }
+        ];
+
+        // ==================== 3. 輔助計算函式 ====================
+        function isGrainItem(item) {
+            if (!item) return false;
+            return GRAIN_IDS.includes(item.id) || /米|粥|燕麥|玉米/.test(item.name || '');
+        }
+
+        function hasUnlockedGrains(s) {
+            const grainItems = Object.values(s.ingredients).filter(isGrainItem);
+            if (grainItems.length === 0) return false;
+            const unlockedGrains = grainItems.filter(i => i.history.length >= 3);
+            return unlockedGrains.length >= Math.min(3, grainItems.length);
+        }
+
+        function hasUnlockedEgg(s) {
+            return Object.values(s.ingredients).some(i =>
+                (i.id === 'egg_yolk' || i.id === 'Chicken Egg' || /蛋/.test(i.name || '')) && i.history.length >= 3
+            );
+        }
+
+        function getBabyAgeString() {
+            const [y, m, d] = state.owner.birthDate.split('-').map(Number);
+            const birth = new Date(y, m - 1, d);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            let diffTime = today - birth;
+            let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays < 0) diffDays = 0;
+
+            let months = Math.floor(diffDays / 30);
+            let days = diffDays % 30;
+            return `寶寶年齡：${months}個月${days}天`;
+        }
+
+        function getBabyMonthsNum() {
+            const [y, m, d] = state.owner.birthDate.split('-').map(Number);
+            const birth = new Date(y, m - 1, d);
+            const now = new Date();
+            let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+            if (now.getDate() < birth.getDate()) months--;
+            return Math.max(0, months);
+        }
+
+        function getAllRecords() {
+            let records = [];
+            Object.values(state.ingredients).forEach(ing => {
+                ing.history.forEach((h, idx) => records.push({ ...h, historyIndex: idx, ingredientId: ing.id, ingredientName: ing.name }));
+            });
+            state.customIngredients.forEach(ing => {
+                ing.history.forEach((h, idx) => records.push({ ...h, historyIndex: idx, ingredientId: ing.id, ingredientName: ing.name }));
+            });
+            return records;
+        }
+
+        function getTriedCount() {
+            let count = 0;
+            Object.values(state.ingredients).forEach(ing => {
+                if (ing.history.length > 0) count++;
+            });
+            state.customIngredients.forEach(ing => {
+                if (ing.history.length > 0) count++;
+            });
+            return count;
+        }
+
+        function getUnlockedCount() {
+            let count = 0;
+            Object.values(state.ingredients).forEach(ing => {
+                if (ing.history.length >= 3) count++;
+            });
+            return count;
+        }
+
+        function hasEatenCategory(s, cat) {
+            const official = Object.values(s.ingredients).some(i => i.category === cat && i.history.length > 0);
+            const custom = s.customIngredients.some(i => i.category === cat && i.history.length > 0);
+            return official || custom;
+        }
+
+        function hasEatenFarmVeggie(s) {
+            const officialVeggie = Object.values(s.ingredients).some(i => i.category === 'farm' && !isGrainItem(i) && i.history.length > 0);
+            const customFarm = s.customIngredients.some(i => i.category === 'farm' && i.history.length > 0);
+            return officialVeggie || customFarm;
+        }
+
+        function countFarmVeggieUnlocked(s) {
+            const officialCount = Object.values(s.ingredients).filter(i => i.category === 'farm' && !isGrainItem(i) && i.history.length >= 3).length;
+            const customCount = s.customIngredients.filter(i => i.category === 'farm' && i.history.length >= 3).length;
+            return officialCount + customCount;
+        }
+
+        function countCategoryUnlocked(s, cat) {
+            const officialCount = Object.values(s.ingredients).filter(i => i.category === cat && i.history.length >= 3).length;
+            const customCount = s.customIngredients.filter(i => i.category === cat && i.history.length >= 3).length;
+            return officialCount + customCount;
+        }
+
+        function countCategoriesUnlocked(s, cats) {
+            return cats.reduce((sum, cat) => sum + countCategoryUnlocked(s, cat), 0);
+        }
+
+        function hasCompletedThreeDayChallenge(s) {
+            const items = [...Object.values(s.ingredients), ...s.customIngredients];
+            return items.some(item => item.history.length >= 3);
+        }
+
+        function hasOvercomeAllergy(s) {
+            let items = [...Object.values(s.ingredients), ...s.customIngredients];
+            return items.some(item => {
+                let history = item.history;
+                if (history.length < 2) return false;
+                let hadAllergy = false;
+                for (let i = 0; i < history.length - 1; i++) {
+                    if (['mild', 'moderate', 'severe'].includes(history[i].reaction)) hadAllergy = true;
+                }
+                let lastReaction = history[history.length - 1].reaction;
+                return hadAllergy && lastReaction === 'none';
+            });
+        }
+
+        function getMaxConsecutiveNoAllergyStreak() {
+            const records = getAllRecords().slice().sort((a, b) => a.date.localeCompare(b.date));
+            let maxStreak = 0;
+            let currentStreak = 0;
+            records.forEach(r => {
+                if (r.reaction === 'none') {
+                    currentStreak++;
+                    if (currentStreak > maxStreak) maxStreak = currentStreak;
+                } else {
+                    currentStreak = 0;
+                }
+            });
+            return maxStreak;
+        }
+
+        function getMaxConsecutiveDays() {
+            const uniqueDates = Array.from(getUniqueRecordDates()).sort();
+            if (uniqueDates.length === 0) return 0;
+            let maxDays = 1;
+            let currentDays = 1;
+            for (let i = 1; i < uniqueDates.length; i++) {
+                const [y1, m1, d1] = uniqueDates[i - 1].split('-').map(Number);
+                const [y2, m2, d2] = uniqueDates[i].split('-').map(Number);
+                const t1 = Date.UTC(y1, m1 - 1, d1);
+                const t2 = Date.UTC(y2, m2 - 1, d2);
+                const diffDays = Math.round((t2 - t1) / (1000 * 60 * 60 * 24));
+                if (diffDays === 1) {
+                    currentDays++;
+                    if (currentDays > maxDays) maxDays = currentDays;
+                } else if (diffDays > 1) {
+                    currentDays = 1;
+                }
+            }
+            return maxDays;
+        }
+
+        function getSavedPolaroidPhotosCount(s) {
+            return Object.values(s.polaroids).filter(p => p && p.imageUrl && p.imageUrl.trim().length > 0).length;
+        }
+
+        function getUniqueRecordDates() {
+            const dates = new Set();
+            getAllRecords().forEach(r => dates.add(r.date));
+            return dates;
+        }
+
+        function getNotesCount() {
+            return getAllRecords().filter(r => r.notes && r.notes.trim().length > 0).length;
+        }
+
+        function updateHeaderInfo() {
+            document.getElementById('header-baby-age').innerText = getBabyAgeString();
+            document.getElementById('header-unlock-count').innerText = `${getUnlockedCount()}/${Object.keys(state.ingredients).length}`;
+        }
+
+        function checkAchievements() {
+            let unlockedNew = false;
+            ACHIEVEMENTS_LIST.forEach(ach => {
+                if (!state.achievements.includes(ach.id)) {
+                    if (ach.condition(state)) {
+                        state.achievements.push(ach.id);
+                        unlockedNew = true;
+                        showToast(`🏆 恭喜解鎖成就：${ach.title}！`);
+                    }
+                }
+            });
+            if (unlockedNew) {
+                saveStateSilently();
+            }
+        }
+
+        function showToast(message) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'fixed top-16 right-4 z-50 flex flex-col items-end space-y-2 pointer-events-none max-w-[85vw]';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'bg-cream-text text-white px-4 py-2.5 rounded-2xl border-2 border-cream-secondary shadow-xl text-xs sm:text-sm font-bold flex items-center space-x-2 pointer-events-auto transition-all duration-300 transform translate-y-0 opacity-100';
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-6px)';
+                setTimeout(() => {
+                    toast.remove();
+                    if (container && container.children.length === 0) {
+                        container.remove();
+                    }
+                }, 300);
+            }, 3200);
+        }
+
+        // ==================== 4. Router 導覽系統 ====================
+        const router = {
+            currentView: 'home',
+            currentParams: {},
+            navigate(viewName, params = {}) {
+                this.currentView = viewName;
+                this.currentParams = params;
+                window.scrollTo(0, 0);
+                renderView(viewName, params);
+                updateActiveNav(viewName);
+            }
+        };
+
+        function updateActiveNav(viewName) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.target === viewName) {
+                    btn.classList.add('text-cream-primary', 'scale-105');
+                    btn.classList.remove('text-cream-text');
+                } else {
+                    btn.classList.remove('text-cream-primary', 'scale-105');
+                    btn.classList.add('text-cream-text');
+                }
+            });
+        }
+
+        function renderView(viewName, params = {}) {
+            const container = document.getElementById('app-container');
+            switch (viewName) {
+                case 'home':
+                    container.innerHTML = renderHomeView();
+                    break;
+                case 'farm_map':
+                    container.innerHTML = renderFarmMapView();
+                    break;
+                case 'section':
+                    container.innerHTML = renderSectionView(params.category);
+                    break;
+                case 'cottage':
+                    container.innerHTML = renderCottageView();
+                    break;
+                case 'owner':
+                    container.innerHTML = renderOwnerView();
+                    break;
+                case 'encyclopedia':
+                    container.innerHTML = renderEncyclopediaView();
+                    break;
+                case 'calendar':
+                    container.innerHTML = renderCalendarView();
+                    break;
+                case 'guidelines':
+                    container.innerHTML = renderGuidelinesView();
+                    break;
+                case 'allergy':
+                    container.innerHTML = renderAllergyView();
+                    break;
+                default:
+                    container.innerHTML = renderHomeView();
+            }
+        }
+
+        // ==================== 5. 各頁面渲染函式 ====================
+
+        // 農場星球插畫：使用您提供的 Google 雲端分享連結自動轉直連，並內建無外部依賴的手繪 SVG 備援
+        const PLANET_SHARE_URL = 'https://drive.google.com/file/d/14YkCxyGzwGftiol19JgZs3Whev6nzVF9/view?usp=drive_link';
+
+        function getFarmPlanetSvg(extraClass = 'w-full h-full') {
+            const primaryUrl = normalizeCloudImageUrl(PLANET_SHARE_URL);
+            const fallbackDriveUrl = 'https://drive.google.com/uc?export=view&id=14YkCxyGzwGftiol19JgZs3Whev6nzVF9';
+            return `
+                <div class="relative ${extraClass} flex items-center justify-center">
+                    <img src="${primaryUrl}" alt="婚貴悠閒農場星球"
+                         onerror="if (!this.dataset.triedFallback) { this.dataset.triedFallback = '1'; this.src = '${fallbackDriveUrl}'; } else { this.style.display = 'none'; this.nextElementSibling.style.display = 'block'; }"
+                         class="w-full h-full object-contain rounded-full">
+                    <svg style="display:none;" viewBox="0 0 260 260" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="planetBase" cx="40%" cy="35%" r="65%">
+                                <stop offset="0%" stop-color="#F6E8C8"/>
+                                <stop offset="55%" stop-color="#DCE8B8"/>
+                                <stop offset="100%" stop-color="#B9D29A"/>
+                            </radialGradient>
+                            <clipPath id="planetClip">
+                                <circle cx="130" cy="130" r="102"/>
+                            </clipPath>
+                        </defs>
+                        <!-- 柔和光暈與星點 -->
+                        <circle cx="130" cy="130" r="118" fill="#E6CCB2" fill-opacity="0.25"/>
+                        <circle cx="32" cy="54" r="4" fill="#D4A373"/>
+                        <circle cx="228" cy="64" r="3.5" fill="#D4A373"/>
+                        <circle cx="222" cy="204" r="4.5" fill="#A3704C" fill-opacity="0.6"/>
+                        <circle cx="38" cy="202" r="3" fill="#A3704C" fill-opacity="0.6"/>
+
+                        <!-- 星球主體 -->
+                        <circle cx="130" cy="130" r="102" fill="url(#planetBase)" stroke="#423830" stroke-width="3.5"/>
+
+                        <g clip-path="url(#planetClip)">
+                            <!-- 小魚池 -->
+                            <ellipse cx="182" cy="156" rx="34" ry="22" fill="#A8D8EA" stroke="#423830" stroke-width="2"/>
+                            <path d="M170 156 Q182 150 194 156" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                            <!-- 起伏山丘與農田條紋 -->
+                            <path d="M22 162 Q85 128 148 164 T245 154 L245 240 L22 240 Z" fill="#C4D89C" stroke="#423830" stroke-width="2"/>
+                            <path d="M48 188 Q82 174 116 188" stroke="#A3704C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                            <path d="M44 202 Q82 186 120 202" stroke="#A3704C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+                            <!-- 可愛小農舍 -->
+                            <rect x="74" y="88" width="38" height="30" rx="4" fill="#FFFDF9" stroke="#423830" stroke-width="2.2"/>
+                            <polygon points="68,90 93,68 118,90" fill="#D48C70" stroke="#423830" stroke-width="2.2" stroke-linejoin="round"/>
+                            <rect x="88" y="102" width="10" height="16" rx="2" fill="#A3704C" stroke="#423830" stroke-width="1.8"/>
+
+                            <!-- 果樹 -->
+                            <rect x="166" y="92" width="7" height="18" rx="2" fill="#8C5A3C" stroke="#423830" stroke-width="1.8"/>
+                            <circle cx="170" cy="80" r="18" fill="#95B878" stroke="#423830" stroke-width="2"/>
+                            <circle cx="163" cy="77" r="2.8" fill="#E06D53"/>
+                            <circle cx="176" cy="83" r="2.8" fill="#E06D53"/>
+
+                            <!-- 溫室小菇 -->
+                            <path d="M52 136 C52 122, 72 122, 72 136 Z" fill="#E6B89C" stroke="#423830" stroke-width="1.8"/>
+                            <rect x="59" y="136" width="6" height="8" rx="2" fill="#FFFDF9" stroke="#423830" stroke-width="1.6"/>
+                        </g>
+
+                        <!-- 外框高光 -->
+                        <path d="M62 66 A82 82 0 0 1 112 44" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.7"/>
+                    </svg>
+                </div>
+            `;
+        }
+
+        // 首頁總覽地圖
+        function renderHomeView() {
+            const avatarUrl = state.owner.avatarUrl;
+            const avatarHtml = avatarUrl 
+                ? `<img src="${avatarUrl}" onerror="this.onerror=null; this.src='https://placehold.co/100x100/E6CCB2/423830?text=Baby'" class="w-16 h-16 rounded-full border-2 border-cream-text object-cover shadow-md bg-white">`
+                : `<div class="w-16 h-16 rounded-full border-2 border-cream-text bg-cream-yellow flex items-center justify-center text-3xl shadow-md">👶</div>`;
+
+            const allergyCount = getAllergicIngredientsList().length;
+            const allergyBadge = allergyCount > 0 ? `<span class="ml-1.5 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full font-extrabold">${allergyCount}</span>` : '';
+
+            return `
+                <div class="flex flex-col items-center justify-center py-2 space-y-5">
+                    
+                    <!-- 星球圖案與農場主人小人 -->
+                    <div class="relative w-60 h-60 sm:w-64 sm:h-64 mb-3 flex items-center justify-center floating">
+                        ${getFarmPlanetSvg('w-full h-full drop-shadow-md')}
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="relative">
+                                ${avatarHtml}
+                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-cream-primary text-white px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border-2 border-cream-text shadow-sm">
+                                    ${escapeHtml(state.owner.nameZh)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 農場標題與副標題 -->
+                    <div class="text-center">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-cream-text tracking-wide">${escapeHtml(state.owner.nameZh)}的悠閒農場</h2>
+                        <p class="text-xs sm:text-sm font-bold text-cream-muted mt-1 tracking-wider">${escapeHtml(state.owner.nameEn)}'s Farm Planet · Baby Food</p>
+                    </div>
+
+                    <!-- 出發去農場主按鈕 -->
+                    <button onclick="router.navigate('farm_map')" class="w-full max-w-sm bg-cream-primary hover:bg-cream-primary/90 text-white font-extrabold text-lg py-3.5 px-6 cream-btn flex items-center justify-center space-x-2">
+                        <span class="text-2xl">🚜</span>
+                        <span>出發去農場</span>
+                    </button>
+
+                    <!-- 四個功能快捷按鈕 (一排兩個) -->
+                    <div class="grid grid-cols-2 gap-3.5 w-full max-w-sm pt-2">
+                        <!-- 左上：快速新增 -->
+                        <button onclick="openQuickAddModal()" class="bg-white hover:bg-cream-yellow/40 p-4 cream-box flex flex-col items-center justify-center text-center space-y-1.5">
+                            <span class="text-2xl sm:text-3xl">⚡</span>
+                            <span class="font-extrabold text-sm">快速新增</span>
+                            <span class="text-[11px] text-cream-muted">記錄今天吃了什麼</span>
+                        </button>
+
+                        <!-- 右上：過敏警示食材 -->
+                        <button onclick="router.navigate('allergy')" class="bg-white hover:bg-red-50 p-4 cream-box flex flex-col items-center justify-center text-center space-y-1.5 relative">
+                            <span class="text-2xl sm:text-3xl">⚠️</span>
+                            <span class="font-extrabold text-sm flex items-center">過敏警示食材${allergyBadge}</span>
+                            <span class="text-[11px] text-cream-muted">追蹤敏感食物狀態</span>
+                        </button>
+
+                        <!-- 左下：新增食材(不在圖鑑) -->
+                        <button onclick="openCustomIngredientModal()" class="bg-white hover:bg-cream-secondary/30 p-4 cream-box flex flex-col items-center justify-center text-center space-y-1.5">
+                            <span class="text-2xl sm:text-3xl">➕</span>
+                            <span class="font-extrabold text-sm">新增食材(自訂)</span>
+                            <span class="text-[11px] text-cream-muted">建立不在圖鑑的食物</span>
+                        </button>
+
+                        <!-- 右下：農場主人 -->
+                        <button onclick="router.navigate('owner')" class="bg-white hover:bg-cream-accent/20 p-4 cream-box flex flex-col items-center justify-center text-center space-y-1.5">
+                            <span class="text-2xl sm:text-3xl">👒</span>
+                            <span class="font-extrabold text-sm">農場主人</span>
+                            <span class="text-[11px] text-cream-muted">設定寶寶與頭像</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 出發去農場地圖頁面 (各區按鈕以星球為中心逆時針旋轉 15 度排列，按鈕輕量化半透明不遮擋星球)
+        function renderFarmMapView() {
+            const avatarUrl = state.owner.avatarUrl;
+            const avatarHtml = avatarUrl 
+                ? `<img src="${avatarUrl}" onerror="this.onerror=null; this.src='https://placehold.co/80x80/E6CCB2/423830?text=Baby'" class="w-12 h-12 rounded-full border-2 border-cream-text object-cover shadow-md bg-white">`
+                : `<div class="w-12 h-12 rounded-full border-2 border-cream-text bg-cream-yellow flex items-center justify-center text-2xl shadow-md">👶</div>`;
+
+            // 6 個區域沿著星球中心對稱分布並逆時針旋轉 15 度 (基礎角度 90°, 30°, 330°, 270°, 210°, 150° 再各 +15° 逆時針)
+            const orbitZones = [
+                { id: 'farm', action: "moveCharacterAndGo(this, 'section', {category: 'farm'})", icon: '🌾', title: '農田區', sub: '五穀/蔬菜', angleDeg: 105 },
+                { id: 'cottage', action: "moveCharacterAndGo(this, 'cottage', {})", icon: '🏠', title: '農舍', sub: `成就 ${state.achievements.length}/${ACHIEVEMENTS_LIST.length}`, angleDeg: 45 },
+                { id: 'greenhouse', action: "moveCharacterAndGo(this, 'section', {category: 'greenhouse'})", icon: '🪵', title: '溫室', sub: '菇類', angleDeg: 345 },
+                { id: 'pasture', action: "moveCharacterAndGo(this, 'section', {category: 'pasture'})", icon: '🥩', title: '牧場區', sub: '蛋白質/肉類', angleDeg: 285 },
+                { id: 'fish', action: "moveCharacterAndGo(this, 'section', {category: 'fish'})", icon: '🐟', title: '魚池', sub: '魚類/海鮮', angleDeg: 225 },
+                { id: 'orchard', action: "moveCharacterAndGo(this, 'section', {category: 'orchard'})", icon: '🌳', title: '果樹區', sub: '水果', angleDeg: 165 }
+            ];
+
+            const orbitRadiusPct = 36;
+            const orbitButtonsHtml = orbitZones.map(zone => {
+                const rad = (zone.angleDeg * Math.PI) / 180;
+                const leftPct = (50 + orbitRadiusPct * Math.cos(rad)).toFixed(2);
+                const topPct = (50 - orbitRadiusPct * Math.sin(rad)).toFixed(2);
+                return `
+                    <button onclick="${zone.action}"
+                        style="left: ${leftPct}%; top: ${topPct}%; transform: translate(-50%, -50%);"
+                        class="absolute z-10 map-zone-pill px-3 py-1.5 text-center whitespace-nowrap">
+                        <div class="text-base sm:text-lg leading-none">${zone.icon}</div>
+                        <div class="font-extrabold text-[11px] sm:text-xs text-cream-text mt-0.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">${zone.title}</div>
+                        <div class="text-[9px] font-bold text-cream-text/80 leading-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">${zone.sub}</div>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="flex flex-col items-center py-2 space-y-4">
+                    <div class="w-full flex items-center justify-center mb-2">
+                        <h2 class="text-base sm:text-lg font-extrabold">🗺️ 農場地圖</h2>
+                    </div>
+
+                    <!-- 圓形星球與逆時針軌道旋轉 15 度分區導覽 -->
+                    <div class="relative w-full max-w-md aspect-square bg-gradient-to-br from-cream-secondary/25 via-white to-cream-primary/15 cream-box flex items-center justify-center p-4 overflow-hidden">
+                        
+                        <!-- 軌道虛線輔助圓環 -->
+                        <div class="absolute w-[73%] h-[73%] rounded-full border-2 border-dashed border-cream-primary/30 pointer-events-none"></div>
+
+                        <!-- 中央農場星球插畫 -->
+                        <div class="w-[70%] h-[70%] flex items-center justify-center pointer-events-none">
+                            ${getFarmPlanetSvg('w-full h-full drop-shadow-sm')}
+                        </div>
+
+                        <!-- 正中央小人 (僅保留頭像) -->
+                        <div id="farm-character" class="absolute z-20 flex flex-col items-center transition-all duration-500 ease-out pointer-events-none">
+                            ${avatarHtml}
+                        </div>
+
+                        <!-- 以星球中心逆時針旋轉 15° 排列的六大區域按鈕 -->
+                        ${orbitButtonsHtml}
+                    </div>
+                    <p class="text-xs text-cream-muted text-center">💡 點擊區域，前往探索。</p>
+                </div>
+            `;
+        }
+
+        function moveCharacterAndGo(btnElement, viewName, params) {
+            const char = document.getElementById('farm-character');
+            if (char && btnElement) {
+                const container = btnElement.parentElement;
+                const containerRect = container.getBoundingClientRect();
+                const btnRect = btnElement.getBoundingClientRect();
+                const offsetX = (btnRect.left + btnRect.width / 2) - (containerRect.left + containerRect.width / 2);
+                const offsetY = (btnRect.top + btnRect.height / 2) - (containerRect.top + containerRect.height / 2);
+                char.style.transform = `translate(${offsetX * 0.58}px, ${offsetY * 0.58}px) scale(1.1)`;
+            }
+            setTimeout(() => {
+                router.navigate(viewName, params);
+            }, 420);
+        }
+
+        // 分區清單與卡片 (一列兩個、倒圓角虛線框、無右箭頭)
+        function renderSectionView(category) {
+            const catMeta = {
+                'farm': { title: '🌾 農田區（五穀/蔬菜）', desc: '第一次播種，第二次澆水，第三次豐收！', bgUrl: '' },
+                'orchard': { title: '🌳 果樹區（水果）', desc: '酸甜好滋味，慢慢播種澆水等待豐收', bgUrl: '' },
+                'fish': { title: '🐟 魚池（魚類/海鮮）', desc: '每次都是餵食，三次過後魚兒就長大囉！', bgUrl: 'https://drive.google.com/file/d/1pgtM55x9weBAEcZOoONbvvogi1xYDh2A/view?usp=drivesdk' },
+                'pasture': { title: '🥩 牧場區（蛋白質/肉類）', desc: '頭好壯壯必備，餵食三次解鎖長大圖鑑！', bgUrl: '' },
+                'greenhouse': { title: '🪵 溫室（菇類）', desc: '細心照料，播種與澆水後的溫室大豐收', bgUrl: '' }
+            };
+            const meta = catMeta[category] || { title: '農場分區', desc: '', bgUrl: '' };
+            const normalizedBgUrl = meta.bgUrl ? normalizeCloudImageUrl(meta.bgUrl) : '';
+
+            const officialItems = Object.values(state.ingredients).filter(i => i.category === category);
+            const customItems = state.customIngredients.filter(i => i.category === category);
+            const items = [...officialItems, ...customItems];
+
+            let html = `
+                <div class="space-y-4">
+                    <div class="relative w-full h-36 sm:h-44 rounded-2xl border-2 border-cream-text overflow-hidden bg-cream-secondary/30 shadow-sm flex items-center justify-center">
+                        ${normalizedBgUrl ? `<img src="${normalizedBgUrl}" alt="${escapeHtml(meta.title)}" onerror="this.style.display='none';" class="absolute inset-0 w-full h-full object-cover">` : ''}
+                        <button onclick="router.navigate('farm_map')" class="absolute top-3 left-3 z-10 cream-btn bg-white/90 backdrop-blur-sm px-3 py-1.5 text-xs font-bold">🗺️ 返回地圖</button>
+                        <div class="relative z-10 bg-white/75 backdrop-blur-md px-4 py-2 rounded-2xl border border-cream-text/30 shadow-sm">
+                            <h2 class="text-base sm:text-lg font-extrabold text-cream-text">${meta.title}</h2>
+                        </div>
+                    </div>
+                    <p class="text-xs text-cream-muted text-center bg-white/70 py-1.5 px-3 rounded-full border border-cream-border">${meta.desc}</p>
+
+                    <div class="grid grid-cols-2 gap-3.5">
+            `;
+
+            items.forEach(item => {
+                const triedCount = item.history.length;
+                let isUnlocked = triedCount >= 3;
+                const normalizedImgUrl = normalizeCloudImageUrl(item.imageUrl || '');
+                let displayVisual = isUnlocked
+                    ? (normalizedImgUrl
+                        ? `<img src="${normalizedImgUrl}" alt="${escapeHtml(item.nameEn || item.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" class="w-full h-full object-contain"><span style="display:none;" class="text-5xl">🎴</span>`
+                        : `<span class="text-5xl">🎴</span>`)
+                    : item.seedEmoji;
+                let reactionBadge = `<span class="text-[10px] bg-gray-100 text-cream-text px-2 py-0.5 rounded-full font-bold">尚未嘗試</span>`;
+                let cardTint = '';
+
+                if (triedCount > 0) {
+                    const latest = item.history[triedCount - 1];
+                    if (latest.reaction === 'none') {
+                        reactionBadge = `<span class="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold">無過敏</span>`;
+                        cardTint = 'bg-emerald-50/40';
+                    } else if (latest.reaction === 'mild') {
+                        reactionBadge = `<span class="text-[10px] bg-yellow-100 text-yellow-800 border border-yellow-300 px-2 py-0.5 rounded-full font-bold">輕微過敏</span>`;
+                        cardTint = 'bg-yellow-50/60';
+                    } else if (latest.reaction === 'moderate') {
+                        reactionBadge = `<span class="text-[10px] bg-amber-200 text-amber-900 border border-amber-400 px-2 py-0.5 rounded-full font-bold">中度過敏</span>`;
+                        cardTint = 'bg-amber-50/60';
+                    } else if (latest.reaction === 'severe') {
+                        reactionBadge = `<span class="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-extrabold">⚠️ 重度過敏</span>`;
+                        cardTint = 'bg-red-100/70 border-red-600';
+                    }
+                }
+
+                if (isUnlocked) {
+                    html += `
+                        <div onclick="openIngredientDetail('${item.id}')" class="cream-dashed-box ${cardTint} p-3 cursor-pointer flex flex-col items-center text-center justify-between">
+                            <div class="p-1 bg-white rounded-2xl border-2 border-cream-text shadow-sm mb-2 flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36 overflow-hidden">
+                                ${displayVisual}
+                            </div>
+                            <div class="w-full">
+                                <div class="flex items-center justify-center space-x-1.5 flex-wrap gap-y-1">
+                                    <span class="text-xs text-cream-muted font-extrabold">${triedCount}/3</span>
+                                    ${reactionBadge}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div onclick="openIngredientDetail('${item.id}')" class="cream-dashed-box ${cardTint} p-3.5 cursor-pointer flex flex-col items-center text-center justify-between">
+                            <div class="text-3xl sm:text-4xl p-1.5 bg-white rounded-2xl border-2 border-cream-text shadow-sm mb-2 flex items-center justify-center w-14 h-14 overflow-hidden">
+                                ${displayVisual}
+                            </div>
+                            <div class="w-full">
+                                <h3 class="font-extrabold text-sm sm:text-base text-cream-text truncate">${escapeHtml(item.name)}</h3>
+                                <div class="flex items-center justify-center space-x-1.5 mt-1.5 flex-wrap gap-y-1">
+                                    <span class="text-xs text-cream-muted font-extrabold">${triedCount}/3</span>
+                                    ${reactionBadge}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+            return html;
+        }
+
+        // ==================== 6. 食材詳情彈窗、圖鑑解鎖卡與農舍寫真牆 ====================
+        function getReactionText(reaction) {
+            switch (reaction) {
+                case 'none': return '無過敏';
+                case 'mild': return '輕微過敏';
+                case 'moderate': return '中度過敏';
+                case 'severe': return '重度過敏';
+                default: return '無過敏';
+            }
+        }
+
+        function getReactionBadgeClass(reaction) {
+            switch (reaction) {
+                case 'none': return 'bg-emerald-100 text-emerald-800';
+                case 'mild': return 'bg-yellow-100 text-yellow-800';
+                case 'moderate': return 'bg-amber-200 text-amber-900';
+                case 'severe': return 'bg-red-600 text-white';
+                default: return 'bg-emerald-100 text-emerald-800';
+            }
+        }
+
+        function openIngredientDetail(itemId) {
+            const item = state.ingredients[itemId] || state.customIngredients.find(i => i.id === itemId);
+            if (!item) return;
+
+            const triedCount = item.history.length;
+            const isUnlocked = triedCount >= 3;
+            const isPlantZone = ['farm', 'orchard', 'greenhouse'].includes(item.category);
+
+            const submitBtnLabel = isPlantZone
+                ? (triedCount === 0 ? '🌱 播種打卡' : (triedCount === 1 ? '💧 澆水打卡' : '✨ 豐收打卡！'))
+                : (triedCount < 2 ? '🥩 餵食打卡' : '😋 肉肉好吃喔！');
+
+            const todayStr = getLocalDateStr();
+            const normalizedImgUrl = normalizeCloudImageUrl(item.imageUrl || '');
+            const headerVisual = isUnlocked
+                ? (normalizedImgUrl
+                    ? `<img src="${normalizedImgUrl}" alt="${escapeHtml(item.nameEn || item.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" class="w-12 h-12 object-contain rounded-xl border border-cream-text bg-white p-0.5"><span style="display:none;" class="text-3xl">🎴</span>`
+                    : `<span class="text-3xl">🎴</span>`)
+                : `<span class="text-3xl">${item.seedEmoji}</span>`;
+
+            let challengeCirclesHtml = '';
+            for (let i = 0; i < 3; i++) {
+                const record = item.history[i];
+                if (record) {
+                    challengeCirclesHtml += `
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-cream-primary bg-amber-50 flex flex-col items-center justify-center p-1 text-center shadow-inner rotate-[-3deg]">
+                            <span class="text-[10px] font-extrabold text-cream-primary">第 ${i + 1} 天打卡</span>
+                            <span class="text-xs font-bold text-cream-text truncate max-w-[84px]">${escapeHtml(record.date)}</span>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-full font-bold mt-0.5 ${getReactionBadgeClass(record.reaction)}">${getReactionText(record.reaction)}</span>
+                        </div>
+                    `;
+                } else {
+                    challengeCirclesHtml += `
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-cream-muted bg-white/60 flex flex-col items-center justify-center p-1 text-center opacity-70">
+                            <span class="text-xs font-bold text-cream-muted">第 ${i + 1} 天</span>
+                            <span class="text-[10px] text-cream-muted mt-1">待打卡</span>
+                        </div>
+                    `;
+                }
+            }
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center space-x-2.5">
+                        ${headerVisual}
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-extrabold">${escapeHtml(item.name)}</h3>
+                            ${item.nameEn ? `<p class="text-[11px] font-bold text-cream-muted">${escapeHtml(item.nameEn)}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        ${isUnlocked ? `<button type="button" onclick="closeModal(); openIngredientUnlockCardModal('${item.id}');" class="cream-btn px-2.5 py-1 bg-cream-yellow text-cream-text text-xs font-extrabold">🎴 圖鑑卡</button>` : ''}
+                        <button onclick="closeModal()" class="cream-btn px-3 py-1 bg-white text-xs font-bold">✕ 關閉</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm">
+                    <!-- 準備方式 -->
+                    <div class="bg-white p-3 cream-box">
+                        <h4 class="font-extrabold text-cream-primary flex items-center space-x-1 mb-1 text-xs">
+                            <span>🔪</span><span>準備方式與切法建議</span>
+                        </h4>
+                        <p class="text-xs text-cream-text leading-relaxed">${escapeHtml(item.prep)}</p>
+                    </div>
+
+                    <!-- 三天挑戰印章打卡區 -->
+                    <div class="bg-cream-secondary/20 p-3 cream-box text-center">
+                        <h4 class="font-extrabold text-cream-text flex items-center justify-center space-x-1 mb-3 text-xs">
+                            <span>📔</span><span>「三天挑戰」打卡記錄 (${triedCount}/3)</span>
+                        </h4>
+                        <div class="flex justify-around items-center gap-1">
+                            ${challengeCirclesHtml}
+                        </div>
+                    </div>
+
+                    <!-- 紀錄填寫表單 -->
+                    <div class="bg-white p-4 cream-box border-2 border-cream-text space-y-3">
+                        <h4 class="font-extrabold text-cream-text text-xs">📝 新增食用記錄 </h4>
+                        <form onsubmit="handleIngredientRecordSubmit(event, '${item.id}')" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold mb-1">選擇日期：</label>
+                                <input type="date" id="rec-date" value="${todayStr}" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg font-bold" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-1">份量 (選填)：</label>
+                                <input type="text" id="rec-amount" placeholder="例如: 30ml / 1條" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-1">過敏反應：</label>
+                                <select id="rec-reaction" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg font-bold">
+                                    <option value="none">🟢 無過敏反應</option>
+                                    <option value="mild">🟡 輕微過敏反應 (輕微紅疹/流鼻水)</option>
+                                    <option value="moderate">🟠 中度過敏反應 (大量紅疹/嘔吐/腹瀉)</option>
+                                    <option value="severe">🔴 重度過敏反應 (嚴重過敏症狀)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold mb-1">備註 (寶寶反應/心情)：</label>
+                                <textarea id="rec-notes" placeholder="記錄寶寶接受度..." class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-cream-primary hover:bg-cream-primary/90 text-white font-extrabold py-3 cream-btn text-xs">
+                                ${submitBtnLabel}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-container').classList.remove('hidden');
+        }
+
+        function handleIngredientRecordSubmit(event, itemId) {
+            event.preventDefault();
+            const item = state.ingredients[itemId] || state.customIngredients.find(i => i.id === itemId);
+            if (!item) return;
+
+            const prevCount = item.history.length;
+            const date = document.getElementById('rec-date').value;
+            const amount = document.getElementById('rec-amount').value;
+            const reaction = document.getElementById('rec-reaction').value;
+            const notes = document.getElementById('rec-notes').value;
+
+            item.history.push({ date, amount, reaction, notes });
+            const newCount = item.history.length;
+            saveState();
+            closeModal();
+
+            if (prevCount < 3 && newCount >= 3) {
+                openIngredientUnlockCardModal(item.id);
+            } else {
+                showToast(`🎉 成功記錄 ${item.name}！`);
+            }
+            renderView(router.currentView, router.currentParams || {});
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').classList.add('hidden');
+        }
+
+        // 螢幕中央圖鑑卡解鎖通知彈窗（上方食材圖片、下方英文名稱、最新過敏燈號與 ?/3 次數、底部「收入食材圖鑑」按鈕）
+        function openIngredientUnlockCardModal(itemId) {
+            const item = state.ingredients[itemId] || state.customIngredients.find(i => i.id === itemId);
+            if (!item) return;
+
+            const triedCount = item.history.length;
+            const latest = triedCount > 0 ? item.history[triedCount - 1] : { reaction: 'none' };
+            const normalizedImgUrl = normalizeCloudImageUrl(item.imageUrl || '');
+
+            let lightBadge = `<span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-400"><span>🟢</span><span>無過敏</span></span>`;
+            if (latest.reaction === 'mild') {
+                lightBadge = `<span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-extrabold bg-yellow-100 text-yellow-800 border border-yellow-400"><span>🟡</span><span>輕微過敏</span></span>`;
+            } else if (latest.reaction === 'moderate') {
+                lightBadge = `<span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-200 text-amber-900 border border-amber-500"><span>🟠</span><span>中度過敏</span></span>`;
+            } else if (latest.reaction === 'severe') {
+                lightBadge = `<span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-extrabold bg-red-600 text-white border border-red-700"><span>🔴</span><span>重度過敏</span></span>`;
+            }
+
+            const cardImageHtml = normalizedImgUrl
+                ? `<img src="${normalizedImgUrl}" alt="${escapeHtml(item.nameEn || item.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-44 h-44 sm:w-52 sm:h-52 object-contain mx-auto rounded-2xl bg-white p-2 border-2 border-cream-text shadow-sm"><div style="display:none;" class="w-44 h-44 sm:w-52 sm:h-52 mx-auto rounded-2xl bg-white border-2 border-cream-text flex items-center justify-center text-6xl">🎴</div>`
+                : `<div class="w-44 h-44 sm:w-52 sm:h-52 mx-auto rounded-2xl bg-white border-2 border-cream-text flex items-center justify-center text-6xl shadow-sm">🎴</div>`;
+
+            const unlockContent = document.getElementById('unlock-card-content');
+            unlockContent.innerHTML = `
+                <div class="space-y-3">
+                    <div class="inline-block bg-cream-yellow border-2 border-cream-text px-3 py-0.5 rounded-full text-xs font-extrabold text-cream-primary">
+                        ✨ 解鎖新食材圖鑑 ✨
+                    </div>
+
+                    <!-- 上方：食材圖片 -->
+                    <div class="pt-1">
+                        ${cardImageHtml}
+                    </div>
+
+                    <!-- 中間：僅放食材英文名稱（圖鑑插畫上已有國字，不顯示中文） -->
+                    <div class="pt-1 min-h-[1.75rem]">
+                        ${item.nameEn ? `
+                            <h3 class="text-lg sm:text-xl font-extrabold text-cream-text tracking-wide">
+                                ${escapeHtml(item.nameEn)}
+                            </h3>
+                        ` : ''}
+                    </div>
+
+                    <!-- 下方：最新一次過敏燈號 與 吃過次數 (?/3) -->
+                    <div class="flex items-center justify-center space-x-2 pt-1">
+                        ${lightBadge}
+                        <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-cream-secondary/50 text-cream-text border border-cream-text/40">
+                            ${triedCount}/3
+                        </span>
+                    </div>
+
+                    <!-- 最底部關閉按鈕 -->
+                    <div class="pt-2">
+                        <button type="button" onclick="closeUnlockCardModal()" class="w-full bg-cream-primary hover:bg-cream-primary/90 text-white font-extrabold py-3 cream-btn text-sm">
+                            📖 收入食材圖鑑
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('unlock-card-modal').classList.remove('hidden');
+        }
+
+        function closeUnlockCardModal() {
+            document.getElementById('unlock-card-modal').classList.add('hidden');
+        }
+
+        // 農舍成就立可拍寫真牆頁面
+        function renderCottageView() {
+            const unlockedTotal = state.achievements.length;
+            const totalCount = ACHIEVEMENTS_LIST.length;
+
+            let html = `
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <button onclick="router.navigate('farm_map')" class="cream-btn bg-white px-3 py-1.5 text-xs font-bold">🗺️ 返回地圖</button>
+                        <h2 class="text-base sm:text-lg font-extrabold">🏠 農舍成就寫真牆</h2>
+                        <span class="bg-cream-primary text-white text-xs font-extrabold px-3 py-1 rounded-full border-2 border-cream-text shadow-sm">
+                            ${unlockedTotal}/${totalCount}
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-cream-muted text-center">✨ 達成農場成就即可解鎖上傳功能，為寶寶留下立可拍紀念照！</p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            `;
+
+            ACHIEVEMENTS_LIST.forEach((ach, index) => {
+                const isUnlocked = state.achievements.includes(ach.id);
+                const polaroidData = state.polaroids[ach.id] || {};
+                const imgSrc = normalizeCloudImageUrl(polaroidData.imageUrl || '');
+                const photoImg = imgSrc
+                    ? `<img src="${imgSrc}" onerror="this.onerror=null;this.src='https://placehold.co/300x300/E6CCB2/423830?text=${encodeURIComponent(ach.title)}';" class="w-full aspect-square object-cover border-2 border-cream-text rounded bg-cream-secondary/30">`
+                    : `<div class="w-full aspect-square bg-cream-secondary/30 border-2 border-cream-text rounded flex items-center justify-center text-4xl">${ach.icon}</div>`;
+
+                const clickAction = isUnlocked
+                    ? `openPolaroidEditModal('${ach.id}')`
+                    : `showToast('🔒 尚未解鎖「${ach.title}」：${ach.desc}')`;
+
+                html += `
+                    <div class="polaroid cursor-pointer ${isUnlocked ? '' : 'opacity-55 grayscale'}" onclick="${clickAction}">
+                        <div class="relative">
+                            ${photoImg}
+                            <span class="absolute top-1.5 left-1.5 bg-white/95 text-cream-text border border-cream-text text-[10px] font-extrabold px-1.5 py-0.5 rounded-md shadow-sm">
+                                #${index + 1}
+                            </span>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <div class="font-extrabold text-xs text-cream-text truncate">${ach.title}</div>
+                            <div class="text-[10px] text-cream-muted mt-0.5">${isUnlocked ? (polaroidData.date || '點擊上傳寫真 📸') : '🔒 未解鎖'}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            return html;
+        }
+
+        function openPolaroidEditModal(achId) {
+            const ach = ACHIEVEMENTS_LIST.find(a => a.id === achId);
+            const currentData = state.polaroids[achId] || { imageUrl: '', date: getLocalDateStr() };
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-base sm:text-lg font-extrabold">📸 編輯立可拍紀念照</h3>
+                    <button onclick="closeModal()" class="cream-btn px-3 py-1 bg-white text-xs font-bold">✕ 關閉</button>
+                </div>
+                <div class="bg-cream-yellow/40 p-3 rounded-xl border border-cream-text/20 mb-4 text-center">
+                    <p class="font-extrabold text-sm">${ach.icon} ${ach.title}</p>
+                    <p class="text-xs text-cream-muted mt-0.5">${ach.desc}</p>
+                </div>
+                <form onsubmit="savePolaroid(event, '${achId}')" class="space-y-3">
+                    <!-- 從手機相簿上傳圖片 -->
+                    <div>
+                        <label class="block text-xs font-bold mb-1">📱 從手機相簿選擇照片 (自動壓縮)</label>
+                        <input type="file" id="polaroid-file-input" accept="image/*" onchange="handlePolaroidFileUpload(event)"
+                            class="w-full p-2 border-2 border-dashed border-cream-primary rounded-xl text-xs bg-white file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-cream-primary file:text-white hover:file:bg-cream-primary/90">
+                    </div>
+
+                    <!-- 照片預覽與手動網址欄位 -->
+                    <div>
+                        <label class="block text-xs font-bold mb-1">🔗 或貼上圖片網址 (選填)</label>
+                        <input type="text" id="polaroid-url" value="${escapeHtml(currentData.imageUrl)}" placeholder="上傳相簿照片後會自動填入，或貼上雲端連結" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white">
+                    </div>
+
+                    <div id="polaroid-preview-box" class="${currentData.imageUrl ? '' : 'hidden'} flex justify-center">
+                        <img id="polaroid-preview-img" src="${currentData.imageUrl}" class="w-28 h-28 object-cover rounded-xl border-2 border-cream-text shadow-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1">達成紀念日期</label>
+                        <input type="date" id="polaroid-date" value="${currentData.date}" required class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                    </div>
+                    <button type="submit" class="w-full bg-cream-primary text-white font-extrabold py-2.5 cream-btn text-sm">💾 儲存立可拍</button>
+                </form>
+            `;
+            document.getElementById('modal-container').classList.remove('hidden');
+        }
+
+        // 將 Google Drive 分享連結自動轉換為穩定可用的圖片直連網址 (lh3.googleusercontent.com/d/{ID})
+        function normalizeCloudImageUrl(url) {
+            if (!url) return '';
+            const trimmed = url.trim();
+            const driveMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                               trimmed.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/) ||
+                               trimmed.match(/drive\.google\.com\/uc\?(?:export=[^&]+&)?id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+            }
+            return trimmed;
+        }
+
+        // 將手機相簿選取的圖片透過 Canvas 壓縮成輕量 Base64 字串，避免塞爆 LocalStorage
+        function compressImageFile(file, maxSize = 600, quality = 0.78) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height && width > maxSize) {
+                            height = Math.round((height * maxSize) / width);
+                            width = maxSize;
+                        } else if (height >= width && height > maxSize) {
+                            width = Math.round((width * maxSize) / height);
+                            height = maxSize;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handlePolaroidFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                showToast('⏳ 正在處理與壓縮相片...');
+                const compressedBase64 = await compressImageFile(file, 600, 0.78);
+                document.getElementById('polaroid-url').value = compressedBase64;
+                const previewBox = document.getElementById('polaroid-preview-box');
+                const previewImg = document.getElementById('polaroid-preview-img');
+                if (previewBox && previewImg) {
+                    previewImg.src = compressedBase64;
+                    previewBox.classList.remove('hidden');
+                }
+                showToast('✅ 相片已準備完成，請點擊儲存立可拍！');
+            } catch (err) {
+                console.error(err);
+                showToast('⚠️ 圖片讀取失敗，請重試或改用圖片網址');
+            }
+        }
+
+        async function handleOwnerAvatarFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                const compressedBase64 = await compressImageFile(file, 360, 0.8);
+                document.getElementById('owner-avatar').value = compressedBase64;
+                const previewImg = document.getElementById('owner-avatar-preview');
+                if (previewImg) {
+                    previewImg.src = compressedBase64;
+                }
+                showToast('✅ 頭像已載入，別忘了按儲存設定！');
+            } catch (err) {
+                console.error(err);
+                showToast('⚠️ 頭像讀取失敗，請重試');
+            }
+        }
+
+        function savePolaroid(event, achId) {
+            event.preventDefault();
+            const rawUrl = document.getElementById('polaroid-url').value.trim();
+            const url = normalizeCloudImageUrl(rawUrl);
+            const date = document.getElementById('polaroid-date').value;
+            state.polaroids[achId] = { imageUrl: url, date: date };
+            saveState();
+            closeModal();
+            showToast('📸 立可拍紀念照已更新！');
+            renderView('cottage');
+        }
+
+        // ==================== 7. 快速新增 & 自訂食材 Modal ====================
+        function openQuickAddModal() {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-base sm:text-lg font-extrabold">⚡ 快速新增今天吃了什麼</h3>
+                    <button onclick="closeModal()" class="cream-btn px-3 py-1 bg-white text-xs font-bold">✕ 關閉</button>
+                </div>
+                <form onsubmit="handleQuickAddSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1">1. 選擇農場分類</label>
+                        <select id="quick-cat" onchange="updateQuickFoodOptions()" class="w-full p-2.5 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                            <option value="farm">🌾 農田區（五穀/蔬菜）</option>
+                            <option value="orchard">🍎 果樹區（水果）</option>
+                            <option value="fish">🐟 魚池（魚類/海鮮）</option>
+                            <option value="pasture">🥩 牧場區（蛋白質/肉類）</option>
+                            <option value="greenhouse">🍄 溫室（菇類）</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1">2. 選擇食材</label>
+                        <div class="flex items-center space-x-2">
+                            <select id="quick-food" onchange="updateQuickAddCardBtn()" required class="flex-1 p-2.5 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                                <!-- 動態產生 -->
+                            </select>
+                            <button type="button" id="quick-view-card-btn" onclick="openQuickSelectedCard()" class="hidden shrink-0 cream-btn bg-cream-yellow px-3 py-2.5 text-xs font-extrabold text-cream-text">
+                                🎴 圖鑑卡
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold mb-1">食用日期</label>
+                            <input type="date" id="quick-date" value="${getLocalDateStr()}" required class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1">份量 (非必填)</label>
+                            <input type="text" id="quick-amount" placeholder="例如：50ml" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1">過敏反應</label>
+                        <select id="quick-reaction" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                            <option value="none">🟢 無過敏反應</option>
+                            <option value="mild">🟡 輕微過敏反應 (輕微紅疹/流鼻水)</option>
+                            <option value="moderate">🟠 中度過敏反應 (大量紅疹/嘔吐/腹瀉)</option>
+                            <option value="severe">🔴 重度過敏反應 (嚴重過敏症狀)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold mb-1">備註</label>
+                        <textarea id="quick-notes" rows="2" placeholder="記錄寶寶反應..." class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-cream-primary text-white font-extrabold py-3 cream-btn text-sm">
+                        ✅ 儲存今日記錄
+                    </button>
+                </form>
+            `;
+            document.getElementById('modal-container').classList.remove('hidden');
+            updateQuickFoodOptions();
+        }
+
+        function updateQuickFoodOptions() {
+            const cat = document.getElementById('quick-cat').value;
+            const foodSelect = document.getElementById('quick-food');
+            const official = Object.values(state.ingredients).filter(i => i.category === cat);
+            const custom = state.customIngredients.filter(i => i.category === cat);
+            const list = [...official, ...custom];
+
+            if (list.length === 0) {
+                foodSelect.innerHTML = `<option value="">(此分類目前無食材)</option>`;
+                updateQuickAddCardBtn();
+                return;
+            }
+            foodSelect.innerHTML = list.map(item => `<option value="${item.id}">${escapeHtml(item.name)} (已吃 ${item.history.length} 次)</option>`).join('');
+            updateQuickAddCardBtn();
+        }
+
+        function updateQuickAddCardBtn() {
+            const foodSelect = document.getElementById('quick-food');
+            const cardBtn = document.getElementById('quick-view-card-btn');
+            if (!foodSelect || !cardBtn) return;
+            const item = state.ingredients[foodSelect.value] || state.customIngredients.find(i => i.id === foodSelect.value);
+            if (item && item.history.length >= 3) {
+                cardBtn.classList.remove('hidden');
+            } else {
+                cardBtn.classList.add('hidden');
+            }
+        }
+
+        function openQuickSelectedCard() {
+            const foodSelect = document.getElementById('quick-food');
+            if (!foodSelect || !foodSelect.value) return;
+            closeModal();
+            openIngredientUnlockCardModal(foodSelect.value);
+        }
+
+        function handleQuickAddSubmit(event) {
+            event.preventDefault();
+            const foodId = document.getElementById('quick-food').value;
+            let item = state.ingredients[foodId] || state.customIngredients.find(i => i.id === foodId);
+            if (!item) return;
+
+            const prevCount = item.history.length;
+            const date = document.getElementById('quick-date').value;
+            const amount = document.getElementById('quick-amount').value;
+            const reaction = document.getElementById('quick-reaction').value;
+            const notes = document.getElementById('quick-notes').value;
+
+            item.history.push({ date, amount, reaction, notes });
+            const newCount = item.history.length;
+            saveState();
+            closeModal();
+
+            if (prevCount < 3 && newCount >= 3) {
+                openIngredientUnlockCardModal(item.id);
+            } else {
+                showToast(`⚡ 已快速記錄：${item.name}！`);
+            }
+            renderView(router.currentView);
+        }
+
+        function openCustomIngredientModal() {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-base sm:text-lg font-extrabold">➕ 新增食材 (自訂項目)</h3>
+                    <button onclick="closeModal()" class="cream-btn px-3 py-1 bg-white text-xs font-bold">✕ 關閉</button>
+                </div>
+                <form onsubmit="handleCustomIngredientSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1">食材名稱</label>
+                        <input type="text" id="cust-name" required placeholder="例如：火龍果泥、寶寶麵線" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">英文名稱 (圖鑑解鎖卡顯示用，選填)</label>
+                        <input type="text" id="cust-name-en" placeholder="例如：Dragon Fruit" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold mb-1">歸屬農場分區</label>
+                            <select id="cust-cat" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                                <option value="farm">🌾 農田區（五穀/蔬菜）</option>
+                                <option value="orchard">🍎 果樹區（水果）</option>
+                                <option value="fish">🐟 魚池（魚類/海鮮）</option>
+                                <option value="pasture">🥩 牧場區（蛋白質/肉類）</option>
+                                <option value="greenhouse">🍄 溫室（菇類）</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1">食材圖片網址 (imageUrl)</label>
+                            <input type="url" id="cust-img-url" placeholder="貼上雲端圖片連結" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">準備方式與備註</label>
+                        <textarea id="cust-prep" rows="2" placeholder="簡單寫下烹調方式..." class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-white"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-cream-primary text-white font-extrabold py-2.5 cream-btn text-sm">
+                        ✨ 建立自訂食材
+                    </button>
+                </form>
+            `;
+            document.getElementById('modal-container').classList.remove('hidden');
+        }
+
+        function handleCustomIngredientSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('cust-name').value.trim();
+            const nameEn = document.getElementById('cust-name-en').value.trim();
+            const category = document.getElementById('cust-cat').value;
+            const imageUrl = document.getElementById('cust-img-url').value.trim();
+            const prep = document.getElementById('cust-prep').value.trim() || '爸爸媽媽愛心自製副食品！';
+            const id = 'custom_' + Date.now();
+
+            state.customIngredients.push({
+                id, name, nameEn, category, seedEmoji: '❓', imageUrl, prep, history: []
+            });
+            saveState();
+            closeModal();
+            showToast(`✨ 已新增自訂食材「${name}」！`);
+            router.navigate('section', { category });
+        }
+
+        // ==================== 8. 農場主人設定頁面 ====================
+        function renderOwnerView() {
+            const previewAvatar = state.owner.avatarUrl || 'https://placehold.co/100x100/FAEDCD/423830?text=Baby';
+            return `
+                <div class="space-y-6 max-w-md mx-auto">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-lg font-extrabold">👒 農場主人設定</h2>
+                    </div>
+
+                    <div class="bg-white cream-box p-6 space-y-4">
+                        <div class="flex flex-col items-center">
+                            <img id="owner-avatar-preview" src="${previewAvatar}" onerror="this.onerror=null; this.src='https://placehold.co/100x100/FAEDCD/423830?text=Baby'" class="w-20 h-20 rounded-full border-2 border-cream-text object-cover shadow-sm bg-cream-yellow">
+                            <span class="text-[11px] text-cream-muted mt-1.5">目前寶寶形象預覽</span>
+                        </div>
+
+                        <form onsubmit="handleOwnerSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold mb-1">寶寶中文名稱 (首頁連動)</label>
+                                <input type="text" id="owner-name-zh" value="${escapeHtml(state.owner.nameZh)}" required class="w-full p-2.5 border-2 border-cream-text rounded-xl text-sm bg-cream-bg font-bold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold mb-1">寶寶英文名稱 (副標題連動)</label>
+                                <input type="text" id="owner-name-en" value="${escapeHtml(state.owner.nameEn)}" required class="w-full p-2.5 border-2 border-cream-text rounded-xl text-sm bg-cream-bg font-bold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold mb-1">寶寶出生日期 (左上角月齡連動)</label>
+                                <input type="date" id="owner-birth" value="${state.owner.birthDate}" required class="w-full p-2.5 border-2 border-cream-text rounded-xl text-sm bg-cream-bg font-bold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold mb-1">📱 從手機相簿上傳寶寶頭像</label>
+                                <input type="file" id="owner-avatar-file" accept="image/*" onchange="handleOwnerAvatarFileUpload(event)"
+                                    class="w-full p-2 border-2 border-dashed border-cream-primary rounded-xl text-xs bg-cream-bg file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-cream-primary file:text-white mb-2">
+                                <label class="block text-xs font-bold mb-1">🔗 或輸入寶寶頭像圖片網址 (選填)</label>
+                                <input type="text" id="owner-avatar" value="${escapeHtml(state.owner.avatarUrl)}" placeholder="上傳相簿後會自動帶入，或貼上雲端連結" class="w-full p-2.5 border-2 border-cream-text rounded-xl text-xs bg-cream-bg">
+                            </div>
+
+                            <button type="submit" class="w-full bg-cream-primary text-white font-extrabold py-3 cream-btn text-sm">
+                                💾 儲存主人設定
+                            </button>
+                        </form>
+
+                        <div class="border-t-2 border-dashed border-cream-text/30 pt-4 mt-4 space-y-3">
+                            <div>
+                                <h4 class="font-extrabold text-xs mb-1 text-cream-text">📖 食材圖鑑 Google 試算表 API 網址</h4>
+                                <p class="text-[11px] text-cream-muted mb-1.5">已自動連接您的食材圖鑑試算表，每次開啟網頁皆會同步最新食材。</p>
+                                <input type="url" id="ingredients-gas-url-input" value="${escapeHtml(state.ingredientsGasUrl || DEFAULT_INGREDIENTS_GAS_URL)}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg mb-2">
+                                <button type="button" onclick="saveAndSyncIngredientsGas()" class="w-full bg-cream-secondary hover:bg-cream-secondary/80 text-cream-text font-extrabold py-2 cream-btn text-xs">
+                                    🔄 立即重新載入雲端食材圖鑑
+                                </button>
+                            </div>
+
+                            <div class="pt-2 border-t border-cream-text/15">
+                                <h4 class="font-extrabold text-xs mb-1 text-cream-text">☁️ 餵食紀錄備份至 Google 試算表 (選填)</h4>
+                                <p class="text-[11px] text-cream-muted mb-1.5">輸入您的 Google Apps Script Web App URL 以備份完整寶寶記錄。</p>
+                                <input type="url" id="gas-url-input" value="${escapeHtml(state.gasUrl || '')}" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border-2 border-cream-text rounded-xl text-xs bg-cream-bg mb-2">
+                                <button type="button" onclick="syncToGas()" class="w-full bg-white hover:bg-cream-bg text-cream-text font-extrabold py-2 cream-btn text-xs">
+                                    📤 備份目前紀錄至雲端
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleOwnerSubmit(event) {
+            event.preventDefault();
+            state.owner.nameZh = document.getElementById('owner-name-zh').value;
+            state.owner.nameEn = document.getElementById('owner-name-en').value;
+            state.owner.birthDate = document.getElementById('owner-birth').value;
+            const inputUrl = document.getElementById('owner-avatar').value.trim();
+            if (inputUrl) {
+                state.owner.avatarUrl = normalizeCloudImageUrl(inputUrl);
+            }
+            const ingGasEl = document.getElementById('ingredients-gas-url-input');
+            if (ingGasEl && ingGasEl.value.trim()) {
+                state.ingredientsGasUrl = ingGasEl.value.trim();
+            }
+            state.gasUrl = document.getElementById('gas-url-input') ? document.getElementById('gas-url-input').value.trim() : state.gasUrl;
+            
+            saveState();
+            showToast('👒 農場主人設定已更新！');
+            loadIngredientsFromCloud(false);
+            router.navigate('home');
+        }
+
+        function saveAndSyncIngredientsGas() {
+            const inputEl = document.getElementById('ingredients-gas-url-input');
+            const url = inputEl ? inputEl.value.trim() : '';
+            if (!url) {
+                showToast('⚠️ 請輸入有效的 Google 試算表 GAS 網址！');
+                return;
+            }
+            state.ingredientsGasUrl = url;
+            saveStateSilently();
+            loadIngredientsFromCloud(true);
+        }
+
+        function syncToGas() {
+            const inputEl = document.getElementById('gas-url-input');
+            const url = inputEl ? inputEl.value.trim() : '';
+            state.gasUrl = url;
+            saveState();
+            if (!url) {
+                showToast('⚠️ 請先輸入有效的 Google Apps Script Web App URL！');
+                return;
+            }
+            fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(state)
+            }).then(() => {
+                showToast('☁️ 資料已成功發送至 Google 試算表！');
+            }).catch(err => {
+                console.error(err);
+                showToast('⚠️ 同步請求已發送（請確認 GAS 端接收狀態）');
+            });
+        }
+
+        // ==================== 9. 食材圖鑑 (雙列進階篩選) ====================
+        let encFilterCat = 'all';
+        let encFilterStatus = 'all';
+
+        function setEncFilter(type, value) {
+            if (type === 'cat') encFilterCat = value;
+            if (type === 'status') encFilterStatus = value;
+            renderView('encyclopedia');
+        }
+
+        function renderEncyclopediaView() {
+            const categories = [
+                { id: 'all', label: '全部' },
+                { id: 'farm', label: '🌾 農田區' },
+                { id: 'orchard', label: '🍎 果樹區' },
+                { id: 'fish', label: '🐟 魚池' },
+                { id: 'pasture', label: '🥩 牧場區' },
+                { id: 'greenhouse', label: '🍄 溫室' },
+                { id: 'custom', label: '✨ 自訂' }
+            ];
+
+            const statuses = [
+                { id: 'all', label: '全部狀態' },
+                { id: 'tried', label: '已嘗試' },
+                { id: 'untried', label: '尚未嘗試' },
+                { id: 'allergic', label: '過敏(輕/中/重)' },
+                { id: 'no_allergy', label: '無過敏' }
+            ];
+
+            let allItems = [
+                ...Object.values(state.ingredients).map(i => ({ ...i, isCustom: false })),
+                ...state.customIngredients.map(i => ({ ...i, isCustom: true }))
+            ];
+
+            const filtered = allItems.filter(item => {
+                if (encFilterCat !== 'all') {
+                    if (encFilterCat === 'custom' && !item.isCustom) return false;
+                    if (encFilterCat !== 'custom' && item.category !== encFilterCat) return false;
+                }
+                const count = item.history.length;
+                if (encFilterStatus === 'tried' && count === 0) return false;
+                if (encFilterStatus === 'untried' && count > 0) return false;
+                if (encFilterStatus === 'allergic') {
+                    if (count === 0) return false;
+                    const latest = item.history[count - 1].reaction;
+                    if (!['mild', 'moderate', 'severe'].includes(latest)) return false;
+                }
+                if (encFilterStatus === 'no_allergy') {
+                    if (count === 0) return false;
+                    const latest = item.history[count - 1].reaction;
+                    if (latest !== 'none') return false;
+                }
+                return true;
+            });
+
+            const getPillStyle = (isSelected) => isSelected
+                ? 'bg-blue-600 text-white border-blue-700 font-extrabold shadow-sm'
+                : 'bg-transparent text-cream-text border-cream-text/40 hover:bg-cream-secondary/30 font-bold';
+
+            return `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="w-20"></div>
+                        <h2 class="text-base sm:text-lg font-extrabold text-center">📖 ${escapeHtml(state.owner.nameZh)}農場食材總圖鑑</h2>
+                        <button onclick="loadIngredientsFromCloud(true)" ${isCloudSyncing ? 'disabled' : ''} class="cream-btn bg-white hover:bg-cream-secondary/40 px-2.5 py-1 text-[11px] font-extrabold shrink-0">
+                            ${isCloudSyncing ? '⏳ 同步中' : '🔄 同步圖鑑'}
+                        </button>
+                    </div>
+
+                    <!-- 篩選器第一列：農場分類 -->
+                    <div class="bg-white cream-box p-3 space-y-2">
+                        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-1">
+                            ${categories.map(c => `
+                                <button onclick="setEncFilter('cat', '${c.id}')" class="px-3 py-1 rounded-full border-2 text-xs whitespace-nowrap transition ${getPillStyle(encFilterCat === c.id)}">
+                                    ${c.label}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <!-- 篩選器第二列：嘗試與過敏狀態 -->
+                        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-dashed border-cream-border">
+                            ${statuses.map(s => `
+                                <button onclick="setEncFilter('status', '${s.id}')" class="px-3 py-1 rounded-full border-2 text-xs whitespace-nowrap transition ${getPillStyle(encFilterStatus === s.id)}">
+                                    ${s.label}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- 圖鑑卡片網格 (未滿3次：虛線方框+問號；滿3次：綠底+解鎖圖鑑 imageUrl 圖片) -->
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                        ${filtered.map(item => {
+                            const count = item.history.length;
+                            const isUnlocked = count >= 3;
+                            const encImgUrl = normalizeCloudImageUrl(item.imageUrl || '');
+                            const encVisual = isUnlocked
+                                ? (encImgUrl
+                                    ? `<img src="${encImgUrl}" alt="${escapeHtml(item.nameEn || item.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover"><span style="display:none;" class="w-full h-full items-center justify-center text-4xl">🎴</span>`
+                                    : `<span class="w-full h-full flex items-center justify-center text-4xl">🎴</span>`)
+                                : `<span class="text-3xl">${item.seedEmoji}</span>`;
+                            if (isUnlocked) {
+                                return `
+                                    <div onclick="openIngredientDetail('${item.id}')" class="relative aspect-square bg-emerald-50 border-2 border-emerald-600 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:scale-105 transition">
+                                        ${encVisual}
+                                        <span class="absolute bottom-1.5 right-1.5 bg-white/90 backdrop-blur-sm border border-emerald-600 text-emerald-900 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full shadow-sm">${count}/3</span>
+                                    </div>
+                                `;
+                            } else {
+                                return `
+                                    <div onclick="openIngredientDetail('${item.id}')" class="border-2 border-dashed border-gray-400 bg-gray-100/80 rounded-2xl p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-200/70 transition">
+                                        <span class="text-3xl mb-1 opacity-75 h-11 flex items-center justify-center">${item.seedEmoji}</span>
+                                        <p class="font-bold text-xs text-gray-700 truncate w-full">${escapeHtml(item.name)}</p>
+                                        <span class="text-[10px] font-bold text-gray-500 mt-0.5">${count}/3</span>
+                                    </div>
+                                `;
+                            }
+                        }).join('')}
+                    </div>
+                    ${filtered.length === 0 ? `<div class="text-center py-8 text-xs text-cream-muted">沒有符合此篩選條件的食材喔 🌱</div>` : ''}
+                </div>
+            `;
+        }
+
+        // ==================== 10. 週曆 (直列式一週檢視) & 全部歷史紀錄管理 ====================
+        let weekOffset = 0;
+
+        function changeWeek(delta) {
+            weekOffset += delta;
+            renderView('calendar');
+        }
+
+        function resetWeek() {
+            weekOffset = 0;
+            renderView('calendar');
+        }
+
+        function renderCalendarView() {
+            const today = new Date();
+            const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + weekOffset * 7);
+            const dayOfWeek = baseDate.getDay(); // 0 = Sun
+            const sunday = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate() - dayOfWeek);
+
+            const weekDays = [];
+            const dayNames = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate() + i);
+                weekDays.push({
+                    dateStr: getLocalDateStr(d),
+                    label: `${d.getMonth() + 1}/${d.getDate()}`,
+                    dayName: dayNames[i],
+                    isToday: getLocalDateStr(d) === getLocalDateStr(today)
+                });
+            }
+
+            const allRecords = getAllRecords();
+            const rangeLabel = `${weekDays[0].label} - ${weekDays[6].label}`;
+
+            return `
+                <div class="space-y-4 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-base sm:text-lg font-extrabold">📅 副食品週曆 (直列式)</h2>
+                    </div>
+
+                    <!-- 週次切換與全部歷史紀錄管理入口 -->
+                    <div class="bg-white cream-box p-3 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <button onclick="changeWeek(-1)" class="cream-btn bg-cream-bg px-3 py-1 text-xs font-extrabold">◀ 上一週</button>
+                            <div class="text-center">
+                                <span class="font-extrabold text-sm text-cream-text">${rangeLabel}</span>
+                                ${weekOffset !== 0 ? `<button onclick="resetWeek()" class="ml-2 text-[10px] underline text-cream-primary font-bold">回本週</button>` : ''}
+                            </div>
+                            <button onclick="changeWeek(1)" class="cream-btn bg-cream-bg px-3 py-1 text-xs font-extrabold">下一週 ▶</button>
+                        </div>
+
+                        <div class="flex justify-center pt-1 border-t border-dashed border-cream-border">
+                            <button onclick="openHistoryManagerModal()" class="w-full sm:w-auto cream-btn bg-cream-secondary/50 hover:bg-cream-secondary px-4 py-1.5 text-xs font-extrabold text-cream-text flex items-center justify-center space-x-1.5">
+                                <span>📋</span>
+                                <span>編輯 / 刪除歷史紀錄 (${allRecords.length} 筆)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 圖例說明 -->
+                    <div class="flex justify-center space-x-3 text-[11px] font-bold">
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-1"></span>無過敏</span>
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-400 mr-1"></span>輕度/中度</span>
+                        <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-600 mr-1"></span>重度過敏</span>
+                    </div>
+
+                    <!-- 直列式 7 天列表 -->
+                    <div class="space-y-2.5">
+                        ${weekDays.map(day => {
+                            const dayRecords = allRecords.filter(r => r.date === day.dateStr);
+                            return `
+                                <div class="bg-white cream-box p-3.5 ${day.isToday ? 'ring-2 ring-cream-primary bg-cream-yellow/20' : ''}">
+                                    <div class="flex items-center justify-between border-b border-dashed border-cream-border pb-1.5 mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-extrabold text-sm text-cream-text">${day.label}</span>
+                                            <span class="text-xs font-bold text-cream-muted">${day.dayName}</span>
+                                            ${day.isToday ? `<span class="text-[10px] bg-cream-primary text-white px-2 py-0.5 rounded-full font-extrabold">今天</span>` : ''}
+                                        </div>
+                                        <span class="text-[11px] font-bold text-cream-muted">${dayRecords.length > 0 ? `共 ${dayRecords.length} 項` : '無紀錄'}</span>
+                                    </div>
+
+                                    ${dayRecords.length > 0 ? `
+                                        <div class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto">
+                                            ${dayRecords.map(r => {
+                                                let badgeClass = 'bg-emerald-600 text-white';
+                                                if (r.reaction === 'mild' || r.reaction === 'moderate') badgeClass = 'bg-amber-400 text-white';
+                                                if (r.reaction === 'severe') badgeClass = 'bg-red-600 text-white';
+                                                return `
+                                                    <button type="button" onclick="openHistoryManagerModal('${r.ingredientId}', ${r.historyIndex})" title="點擊編輯或刪除此筆紀錄"
+                                                        class="${badgeClass} text-xs font-extrabold px-2.5 py-1 rounded-xl shadow-sm hover:opacity-90 active:scale-95 transition text-left">
+                                                        ${escapeHtml(r.ingredientName)}${r.amount ? ` (${escapeHtml(r.amount)})` : ''}
+                                                    </button>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                    ` : `<p class="text-xs text-gray-400 italic">尚未記錄副食品</p>`}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 週曆全部歷史紀錄管理彈窗（支援編輯與刪除每筆紀錄）
+        let historyManagerSearch = '';
+        let editingHistoryTarget = null; // { ingredientId, historyIndex }
+
+        function openHistoryManagerModal(targetIngId = null, targetIdx = null) {
+            if (targetIngId !== null && targetIdx !== null) {
+                editingHistoryTarget = { ingredientId: targetIngId, historyIndex: targetIdx };
+            } else {
+                editingHistoryTarget = null;
+            }
+            renderHistoryManagerContent();
+            document.getElementById('modal-container').classList.remove('hidden');
+        }
+
+        function setHistorySearch(val) {
+            historyManagerSearch = val;
+            renderHistoryManagerContent();
+        }
+
+        function startEditHistoryRecord(ingredientId, historyIndex) {
+            editingHistoryTarget = { ingredientId, historyIndex };
+            renderHistoryManagerContent();
+        }
+
+        function cancelEditHistoryRecord() {
+            editingHistoryTarget = null;
+            renderHistoryManagerContent();
+        }
+
+        function saveEditedHistoryRecord(event, ingredientId, historyIndex) {
+            event.preventDefault();
+            const item = state.ingredients[ingredientId] || state.customIngredients.find(i => i.id === ingredientId);
+            if (!item || !item.history[historyIndex]) return;
+
+            const newDate = document.getElementById('edit-rec-date').value;
+            const newAmount = document.getElementById('edit-rec-amount').value;
+            const newReaction = document.getElementById('edit-rec-reaction').value;
+            const newNotes = document.getElementById('edit-rec-notes').value;
+
+            item.history[historyIndex] = {
+                date: newDate,
+                amount: newAmount,
+                reaction: newReaction,
+                notes: newNotes
+            };
+
+            editingHistoryTarget = null;
+            saveState();
+            showToast(`✅ 已更新「${item.name}」的紀錄！`);
+            renderHistoryManagerContent();
+            if (router.currentView === 'calendar') {
+                renderView('calendar');
+            }
+        }
+
+        function deleteHistoryRecord(ingredientId, historyIndex) {
+            const item = state.ingredients[ingredientId] || state.customIngredients.find(i => i.id === ingredientId);
+            if (!item || !item.history[historyIndex]) return;
+
+            item.history.splice(historyIndex, 1);
+            if (editingHistoryTarget && editingHistoryTarget.ingredientId === ingredientId && editingHistoryTarget.historyIndex === historyIndex) {
+                editingHistoryTarget = null;
+            }
+            saveState();
+            showToast(`🗑️ 已刪除「${item.name}」該筆紀錄`);
+            renderHistoryManagerContent();
+            if (router.currentView === 'calendar') {
+                renderView('calendar');
+            }
+        }
+
+        function renderHistoryManagerContent() {
+            const allRecords = getAllRecords().slice().sort((a, b) => b.date.localeCompare(a.date));
+            const keyword = historyManagerSearch.trim().toLowerCase();
+            const filtered = keyword
+                ? allRecords.filter(r =>
+                    r.ingredientName.toLowerCase().includes(keyword) ||
+                    r.date.includes(keyword) ||
+                    (r.notes && r.notes.toLowerCase().includes(keyword))
+                )
+                : allRecords;
+
+            const reactionLabels = {
+                none: { text: '🟢 無過敏', cls: 'bg-emerald-100 text-emerald-800 border-emerald-300' },
+                mild: { text: '🟡 輕微過敏', cls: 'bg-yellow-100 text-yellow-800 border-yellow-300' },
+                moderate: { text: '🟠 中度過敏', cls: 'bg-amber-200 text-amber-900 border-amber-400' },
+                severe: { text: '🔴 重度過敏', cls: 'bg-red-600 text-white border-red-700' }
+            };
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-base sm:text-lg font-extrabold">📋 全部歷史紀錄管理 (${allRecords.length} 筆)</h3>
+                    <button onclick="closeModal()" class="cream-btn px-3 py-1 bg-white text-xs font-bold">✕ 關閉</button>
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" value="${escapeHtml(historyManagerSearch)}" oninput="setHistorySearch(this.value)"
+                        placeholder="🔍 搜尋食材名稱、日期 (如 2026-11) 或備註..."
+                        class="w-full p-2.5 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                </div>
+
+                ${filtered.length === 0 ? `
+                    <div class="text-center py-8 text-xs text-cream-muted bg-white/70 rounded-2xl border border-dashed border-cream-border">
+                        目前沒有符合條件的歷史紀錄 🌱
+                    </div>
+                ` : `
+                    <div class="space-y-2.5 max-h-[58vh] overflow-y-auto pr-0.5">
+                        ${filtered.map(r => {
+                            const isEditing = editingHistoryTarget &&
+                                editingHistoryTarget.ingredientId === r.ingredientId &&
+                                editingHistoryTarget.historyIndex === r.historyIndex;
+
+                            if (isEditing) {
+                                return `
+                                    <form onsubmit="saveEditedHistoryRecord(event, '${r.ingredientId}', ${r.historyIndex})"
+                                        class="bg-cream-yellow/35 border-2 border-cream-primary rounded-2xl p-3 space-y-2.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-extrabold text-sm text-cream-text">✏️ 編輯：${escapeHtml(r.ingredientName)} (第 ${r.historyIndex + 1} 次)</span>
+                                            <button type="button" onclick="cancelEditHistoryRecord()" class="text-xs font-bold text-cream-muted underline">取消</button>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div>
+                                                <label class="block text-[11px] font-bold mb-0.5">日期</label>
+                                                <input type="date" id="edit-rec-date" value="${r.date}" required class="w-full p-1.5 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[11px] font-bold mb-0.5">份量</label>
+                                                <input type="text" id="edit-rec-amount" value="${escapeHtml(r.amount || '')}" placeholder="如：30ml" class="w-full p-1.5 border-2 border-cream-text rounded-xl text-xs bg-white">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-bold mb-0.5">過敏反應</label>
+                                            <select id="edit-rec-reaction" class="w-full p-1.5 border-2 border-cream-text rounded-xl text-xs bg-white font-bold">
+                                                <option value="none" ${r.reaction === 'none' ? 'selected' : ''}>🟢 無過敏反應</option>
+                                                <option value="mild" ${r.reaction === 'mild' ? 'selected' : ''}>🟡 輕微過敏反應 (輕微紅疹/流鼻水)</option>
+                                                <option value="moderate" ${r.reaction === 'moderate' ? 'selected' : ''}>🟠 中度過敏反應 (大量紅疹/嘔吐/腹瀉)</option>
+                                                <option value="severe" ${r.reaction === 'severe' ? 'selected' : ''}>🔴 重度過敏反應 (嚴重過敏症狀)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] font-bold mb-0.5">備註</label>
+                                            <input type="text" id="edit-rec-notes" value="${escapeHtml(r.notes || '')}" placeholder="觀察心得..." class="w-full p-1.5 border-2 border-cream-text rounded-xl text-xs bg-white">
+                                        </div>
+                                        <div class="flex space-x-2 pt-1">
+                                            <button type="submit" class="flex-1 bg-cream-primary text-white font-extrabold py-2 cream-btn text-xs">💾 儲存修改</button>
+                                            <button type="button" onclick="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                                                class="px-3 py-2 bg-red-100 text-red-700 border-2 border-red-400 rounded-xl text-xs font-extrabold">🗑️ 刪除</button>
+                                            <button type="button" style="display:none;" onclick="deleteHistoryRecord('${r.ingredientId}', ${r.historyIndex})"
+                                                class="px-3 py-2 bg-red-600 text-white border-2 border-cream-text rounded-xl text-xs font-extrabold">確定刪除？</button>
+                                        </div>
+                                    </form>
+                                `;
+                            }
+
+                            const badge = reactionLabels[r.reaction] || reactionLabels.none;
+                            return `
+                                <div class="bg-white border-2 border-cream-text/30 rounded-2xl p-3 flex items-start justify-between gap-2">
+                                    <div class="space-y-1 min-w-0 flex-1">
+                                        <div class="flex items-center flex-wrap gap-1.5">
+                                            <span class="font-extrabold text-sm text-cream-text">${escapeHtml(r.ingredientName)}</span>
+                                            <span class="text-[10px] font-bold text-cream-muted bg-cream-bg px-2 py-0.5 rounded-full border border-cream-border">第 ${r.historyIndex + 1} 次</span>
+                                            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${badge.cls}">${badge.text}</span>
+                                        </div>
+                                        <div class="text-xs text-cream-muted font-bold">
+                                            📅 ${r.date}${r.amount ? ` ・ 🥣 ${escapeHtml(r.amount)}` : ''}
+                                        </div>
+                                        ${r.notes ? `<p class="text-xs text-cream-text/85 bg-cream-bg/80 px-2.5 py-1 rounded-lg">📝 ${escapeHtml(r.notes)}</p>` : ''}
+                                    </div>
+                                    <div class="flex flex-col space-y-1.5 shrink-0">
+                                        <button type="button" onclick="startEditHistoryRecord('${r.ingredientId}', ${r.historyIndex})"
+                                            class="px-2.5 py-1 bg-cream-secondary/50 hover:bg-cream-secondary border border-cream-text rounded-xl text-[11px] font-extrabold text-cream-text">
+                                            ✏️ 編輯
+                                        </button>
+                                        <button type="button" onclick="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                            class="px-2.5 py-1 bg-red-50 hover:bg-red-100 border border-red-300 rounded-xl text-[11px] font-extrabold text-red-700">
+                                            🗑️ 刪除
+                                        </button>
+                                        <button type="button" style="display:none;" onclick="deleteHistoryRecord('${r.ingredientId}', ${r.historyIndex})"
+                                            class="px-2.5 py-1 bg-red-600 text-white border border-cream-text rounded-xl text-[11px] font-extrabold">
+                                            確定？
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `}
+            `;
+        }
+
+        // ==================== 11. 食用須知 & 過敏警示食材 ====================
+        function renderGuidelinesView() {
+            return `
+                <div class="space-y-4 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-base sm:text-lg font-extrabold">💡 副食品醫學常識與注意事項</h2>
+                    </div>
+
+                    <div class="space-y-4 text-sm">
+                        <div class="bg-white cream-box p-4 space-y-2">
+                            <h3 class="font-extrabold text-base text-cream-primary">🍼 1. 開始添加副食品的時機 (4-6個月)</h3>
+                            <p class="text-xs sm:text-sm leading-relaxed">根據台灣兒科醫學會建議，純母乳或配方奶哺育的寶寶，應於 <strong>滿 4 至 6 個月大</strong> 開始添加副食品。觀察指標包含：脖子挺直、靠坐穩定、對大人食物表現濃厚興趣、吞嚥反射成熟（不再用舌頭頂出湯匙）。</p>
+                        </div>
+
+                        <div class="bg-white cream-box p-4 space-y-2">
+                            <h3 class="font-extrabold text-base text-cream-primary">🥄 2. 少量多樣化與「三天觀察原則」</h3>
+                            <p class="text-xs sm:text-sm leading-relaxed">每次只添加 <strong>一種新食材</strong>，由少許（1-2茶匙）開始，連續觀察 2～3 天。確認寶寶沒有皮膚紅疹、嘔吐、腹瀉或異常哭鬧後，再加入下一種新食材。現代醫學建議滿 6 個月後即可逐步嘗試高致敏食物（如蛋黃、魚類、花生泥），無需刻意延後。</p>
+                        </div>
+
+                        <div class="bg-white cream-box p-4 space-y-2">
+                            <h3 class="font-extrabold text-base text-cream-primary">🥩 3. 滿 6 個月務必補充「鐵質與鋅」</h3>
+                            <p class="text-xs sm:text-sm leading-relaxed">寶寶體內從母體帶來的鐵質儲備在 6 個月後會大幅消耗。副食品應優先包含 <strong>富含鐵質的紅肉泥（牛肉、豬肉）、蛋黃、深綠色蔬菜</strong>，並搭配富含維生素 C 的果泥幫助鐵質吸收。</p>
+                        </div>
+
+                        <div class="bg-red-50 border-2 border-red-400 rounded-2xl p-4 space-y-2">
+                            <h3 class="font-extrabold text-base text-red-700">🚫 4. 一歲以下絕對禁忌食物</h3>
+                            <ul class="list-disc pl-5 text-xs sm:text-sm space-y-1 text-red-900 font-semibold">
+                                <li><strong>蜂蜜</strong>：可能含有肉毒桿菌孢子，一歲以下嬰兒腸道尚未發育完全，嚴禁食用。</li>
+                                <li><strong>鮮奶（作為主要飲品）</strong>：一歲前不可用鮮奶取代母乳或配方奶（少量入菜烘焙可）。</li>
+                                <li><strong>整顆堅果、整顆葡萄或硬糖果</strong>：極易造成呼吸道異物梗塞窒息風險。</li>
+                                <li><strong>額外添加鹽、糖與調味料</strong>：一歲前食物以天然原味為主，避免增加寶寶腎臟負擔。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getAllergicIngredientsList() {
+            const all = [...Object.values(state.ingredients), ...state.customIngredients];
+            return all.filter(item => {
+                if (item.history.length === 0) return false;
+                const latest = item.history[item.history.length - 1];
+                return ['mild', 'moderate', 'severe'].includes(latest.reaction);
+            });
+        }
+
+        function renderAllergyView() {
+            const allergicList = getAllergicIngredientsList();
+
+            let html = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-base sm:text-lg font-extrabold">⚠️ 過敏警示食材專區</h2>
+                    </div>
+                    <p class="text-xs text-cream-muted text-center">🚨 這裡收錄了最新一次記錄曾引發過敏反應的食材。若之後再次嘗試且無過敏，記錄無過敏後會自動從警示區移除！</p>
+            `;
+
+            if (allergicList.length === 0) {
+                html += `
+                    <div class="bg-white cream-box p-8 text-center space-y-2">
+                        <span class="text-4xl block">🎉</span>
+                        <h3 class="font-extrabold text-base text-emerald-700">太棒了！目前沒有過敏警示食材</h3>
+                        <p class="text-xs text-cream-muted">寶寶適應得非常好，繼續快樂探索農場美食吧！</p>
+                    </div>
+                `;
+            } else {
+                html += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">`;
+                allergicList.forEach(item => {
+                    const latest = item.history[item.history.length - 1];
+                    let badge = '<span class="bg-yellow-200 text-yellow-900 px-2 py-0.5 rounded-full text-xs font-extrabold">輕微過敏</span>';
+                    let cardBg = 'bg-yellow-50 border-yellow-600';
+                    if (latest.reaction === 'moderate') {
+                        badge = '<span class="bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full text-xs font-extrabold">中度過敏</span>';
+                        cardBg = 'bg-amber-50 border-amber-700';
+                    }
+                    if (latest.reaction === 'severe') {
+                        badge = '<span class="bg-red-600 text-white px-2 py-0.5 rounded-full text-xs font-extrabold">重度過敏</span>';
+                        cardBg = 'bg-red-100 border-red-600';
+                    }
+
+                    html += `
+                        <div onclick="openIngredientDetail('${item.id}')" class="border-2 ${cardBg} rounded-2xl p-4 cursor-pointer shadow-sm flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h3 class="font-extrabold text-base">${escapeHtml(item.name)}</h3>
+                                    ${badge}
+                                </div>
+                                <p class="text-xs text-cream-muted mt-1">最近記錄日期：${latest.date}</p>
+                                ${latest.notes ? `<p class="text-xs text-cream-text mt-1 bg-white/70 p-1.5 rounded-lg">備註：${escapeHtml(latest.notes)}</p>` : ''}
+                            </div>
+                            <span class="text-xs font-extrabold text-cream-primary underline ml-2">再次挑戰</span>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            return html;
+        }
+
+        // 防止 XSS 跳脫字元工具
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // ==================== 12. 初始化執行 ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            updateHeaderInfo();
+            checkAchievements();
+            router.navigate('home');
+            loadIngredientsFromCloud(false);
+        });
+    </script>
+</body>
+</html>
